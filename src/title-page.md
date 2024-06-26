@@ -1,26 +1,26 @@
-# The Rust Programming Language
+# Rust Programlama Dili
 
-*by Steve Klabnik and Carol Nichols, with contributions from the Rust Community*
+*Steve Klabnik ve Carol Nichols tarafından, Rust Topluluğundan katkılar ile*
 
-This version of the text assumes you’re using Rust 1.78.0 (released 2024-05-02)
-or later. See the [“Installation” section of Chapter 1][install]<!-- ignore -->
-to install or update Rust.
+Metnin bu sürümü Rust 1.78.0 (02/05/2024'te yayınlanan) ya da sonraki bir
+sürümü kullandığınızı varsaymaktadır. Rust'ı kurmak ya da güncellemek için
+[Kısım 1'in “Kurulum” bölümüne][install] bakın.
 
-The HTML format is available online at
+HTML biçimi
 [https://doc.rust-lang.org/stable/book/](https://doc.rust-lang.org/stable/book/)
-and offline with installations of Rust made with `rustup`; run `rustup doc
---book` to open.
+adresinde çevrimiçi, `rustup` ile yapılmış Rust kurulumlarıyla çevrimdışı
+mevcuttur; açmak için `rustup doc --book` komutunu verin.
 
-Several community [translations] are also available.
+Ayrıca birçok topluluk [çevirisi][translations] mevcuttur.
 
-This text is available in [paperback and ebook format from No Starch
-Press][nsprust].
+Bu metin [No Starch Yayınları'ndan ciltsiz kitap ve e-kitap biçiminde][nsprust]
+mevcuttur.
 
 [install]: ch01-01-installation.html
 [editions]: appendix-05-editions.html
 [nsprust]: https://nostarch.com/rust-programming-language-2nd-edition
 [translations]: appendix-06-translation.html
 
-> **🚨 Want a more interactive learning experience? Try out a different version
-> of the Rust Book, featuring: quizzes, highlighting, visualizations, and
-> more**: <https://rust-book.cs.brown.edu>
+> **🚨 Daha etkileşimli bir öğrenme deneyimi mi istiyorsunuz? Rust Kitabının
+> sınavlar, vurgulama, görselleştirmeler ve daha fazlasını içeren farklı
+> bir sürümünü deneyin**: <https://rust-book.cs.brown.edu>
