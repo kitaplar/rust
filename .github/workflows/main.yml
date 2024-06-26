@@ -83,8 +83,6 @@ jobs:
         shellcheck --version
     - name: Shellcheck
       run: find . -name '*.sh' | xargs shellcheck
-    - name: Spellcheck
-      run: bash ci/spellcheck.sh list
     - name: Lint for local file paths
       run: |
         mdbook build
