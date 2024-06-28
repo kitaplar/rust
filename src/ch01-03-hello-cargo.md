@@ -122,7 +122,7 @@ vererek projenizi inşa edin:
 
 ```console
 $ cargo build
-   Compiling merhaba_cargo v0.1.0 (file:///projeler/merhaba_cargo)
+   Compiling merhaba_cargo v0.1.0 (file:///projects/merhaba_cargo)
     Finished dev [unoptimized + debuginfo] target(s) in 2.85 secs
 ```
 
@@ -167,7 +167,7 @@ edecekti ve şu çıktıyı görecektiniz:
 
 ```console
 $ cargo run
-   Compiling merhaba_cargo v0.1.0 (file:///projeler/merhaba_cargo)
+   Compiling merhaba_cargo v0.1.0 (file:///projects/merhaba_cargo)
     Finished dev [unoptimized + debuginfo] target(s) in 0.33 secs
      Running `target/debug/merhaba_cargo`
 Hello, world!
@@ -179,7 +179,7 @@ derlendiğinden emin olmak için onu hızlıca kontrol eder ama bir
 
 ```console
 $ cargo check
-   Checking merhaba_cargo v0.1.0 (file:///projeler/merhaba_cargo)
+   Checking merhaba_cargo v0.1.0 (file:///projects/merhaba_cargo)
     Finished dev [unoptimized + debuginfo] target(s) in 0.32 secs
 ```
 
