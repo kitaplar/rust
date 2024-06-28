@@ -253,7 +253,7 @@ and writing Rust code. So, in Chapter 2, we’ll build a guessing game program.
 If you would rather start by learning how common programming concepts work in
 Rust, see Chapter 3 and then return to Chapter 2.
 
-[installation]: ch01-01-installation.html#installation
+[installation]: ch01-01-installation.html#kurulum
 [toml]: https://toml.io
 [appendix-e]: appendix-05-editions.html
 [cargo]: https://doc.rust-lang.org/cargo/
