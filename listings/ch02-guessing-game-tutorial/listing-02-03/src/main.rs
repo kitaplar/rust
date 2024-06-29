@@ -5,23 +5,23 @@ use rand::Rng;
 
 fn main() {
     // ANCHOR_END: ch07-04
-    println!("Guess the number!");
+    println!("Sayıyı tahmin et!");
 
     // ANCHOR: ch07-04
-    let secret_number = rand::thread_rng().gen_range(1..=100);
+    let gizli_sayı = rand::thread_rng().gen_range(1..=100);
     // ANCHOR_END: ch07-04
 
-    println!("The secret number is: {secret_number}");
+    println!("Gizli sayı: {gizli_sayı}");
 
-    println!("Please input your guess.");
+    println!("Lütfen tahmininizi girin.");
 
-    let mut guess = String::new();
+    let mut tahmin = String::new();
 
     io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed to read line");
+        .read_line(&mut tahmin)
+        .expect("Satırı okumak başarısız");
 
-    println!("You guessed: {guess}");
+    println!("Şunu tahmin ettiniz: {tahmin}");
     // ANCHOR: ch07-04
 }
 // ANCHOR_END: ch07-04

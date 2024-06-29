@@ -1,33 +1,32 @@
-# Programming a Guessing Game
+# Bir Tahmin Oyunu Programlama
 
-Let’s jump into Rust by working through a hands-on project together! This
-chapter introduces you to a few common Rust concepts by showing you how to use
-them in a real program. You’ll learn about `let`, `match`, methods, associated
-functions, external crates, and more! In the following chapters, we’ll explore
-these ideas in more detail. In this chapter, you’ll just practice the
-fundamentals.
+Hadi uygulamalı bir proje ile Rust'a başlayalım! Bu bölüm, birkaç yaygın Rust
+kavramını, bunları gerçek bir programda nasıl kullanacağınızı göstererek
+tanıtır. `let`, `match`, metodlar, ilişkili fonksiyonlar, harici crate'ler ve
+daha fazlası hakkında öğreneceksiniz! Sonraki bölümlerde, bu fikirleri daha
+ayrıntılı bir şekilde ele alacağız. Bu bölümde sadece temelleri pratik
+edeceksiniz.
 
-We’ll implement a classic beginner programming problem: a guessing game. Here’s
-how it works: the program will generate a random integer between 1 and 100. It
-will then prompt the player to enter a guess. After a guess is entered, the
-program will indicate whether the guess is too low or too high. If the guess is
-correct, the game will print a congratulatory message and exit.
+Klasik bir başlangıç programlama problemini gerçekleyeceğiz: bir tahmin oyunu.
+Şöyle çalışıyor: program 1 ve 100 arasında rasgele bir tamsayı üretecek. Daha
+sonra oyuncunun bir tahmin girmesini isteyecek. Bir tahmin girildikten sonra
+program, tahminin çok küçük ya da büyük olduğunu söyleyecek. Eğer tahmin
+doğruysa, program bir tebrik mesajı yazdıracak ve çıkacak.
 
-## Setting Up a New Project
+## Yeni bir Proje Ayarlamak
 
-To set up a new project, go to the *projects* directory that you created in
-Chapter 1 and make a new project using Cargo, like so:
+Yeni bir proje ayarlamak için 1. bölümde oluşturduğunuz *projeler* dizinine
+gidin ve Cargo kullanarak yeni bir proje yapın, şunun gibi:
 
 ```console
-$ cargo new guessing_game
-$ cd guessing_game
+$ cargo new tahmin_oyunu
+$ cd tahmin_oyunu
 ```
 
-The first command, `cargo new`, takes the name of the project (`guessing_game`)
-as the first argument. The second command changes to the new project’s
-directory.
+İlk komut, yani `cargo new`, projenin adını (`tahmin_oyunu`) ilk argüman olarak
+alır. İkinci komut, yeni projenin dizinine gidilmesini sağlar.
 
-Look at the generated *Cargo.toml* file:
+Üretilen *Cargo.toml* dosyasına bakın:
 
 <!-- manual-regeneration
 cd listings/ch02-guessing-game-tutorial
@@ -38,14 +37,14 @@ cargo run > output.txt 2>&1
 cd ../../..
 -->
 
-<span class="filename">Filename: Cargo.toml</span>
+<span class="filename">Dosya adı: Cargo.toml</span>
 
 ```toml
 {{#include ../listings/ch02-guessing-game-tutorial/no-listing-01-cargo-new/Cargo.toml}}
 ```
 
-As you saw in Chapter 1, `cargo new` generates a “Hello, world!” program for
-you. Check out the *src/main.rs* file:
+Bölüm 1'de gördüğünüz gibi `cargo new` bir “Hello, world!” programı üretir.
+*src/main.rs* dosyasına bakın:
 
 <span class="filename">Filename: src/main.rs</span>
 
@@ -53,27 +52,27 @@ you. Check out the *src/main.rs* file:
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/no-listing-01-cargo-new/src/main.rs}}
 ```
 
-Now let’s compile this “Hello, world!” program and run it in the same step
-using the `cargo run` command:
+Şimdi hadi bu “Hello, world!” programını `cargo run` komutunu kullanarak tek
+adımda derleyip koşalım:
 
 ```console
 {{#include ../listings/ch02-guessing-game-tutorial/no-listing-01-cargo-new/output.txt}}
 ```
 
-The `run` command comes in handy when you need to rapidly iterate on a project,
-as we’ll do in this game, quickly testing each iteration before moving on to
-the next one.
+`run` komutu, bir proje üzerinde hızlıca yinelemek istediğinizde kullanışlıdır.
+Bu oyunda da bunu yapacağız çünkü bir sonrakine geçmeden önce her adımı hızlıca
+test etmemiz gerekir.
 
-Reopen the *src/main.rs* file. You’ll be writing all the code in this file.
+*src/main.rs* dosyasını yeniden açın. Tüm kodunuzu bu dosyaya yazacaksınız.
 
-## Processing a Guess
+## Bir Tahmini İşleme
 
-The first part of the guessing game program will ask for user input, process
-that input, and check that the input is in the expected form. To start, we’ll
-allow the player to input a guess. Enter the code in Listing 2-1 into
-*src/main.rs*.
+Tahmin oyununun ilk kısmı kullanıcı girdisini isteyecek, bunu işleyecek ve
+bunun beklenen biçimde olup olmadığını kontrol edecek. Başlamak için oyuncunun
+bir tahmin girmesine izin vereceğiz. *src/main.rs*'e Listing 2-1'deki kodu
+girin.
 
-<Listing number="2-1" file-name="src/main.rs" caption="Code that gets a guess from the user and prints it">
+<Listing number="2-1" file-name="src/main.rs" caption="Kullanıcıdan bir tahmin alan ve bunu yazdıran kod">
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:all}}
@@ -81,220 +80,222 @@ allow the player to input a guess. Enter the code in Listing 2-1 into
 
 </Listing> 
 
-This code contains a lot of information, so let’s go over it line by line. To
-obtain user input and then print the result as output, we need to bring the
-`io` input/output library into scope. The `io` library comes from the standard
-library, known as `std`:
+Bu kod birçok bilgi içermektedir, hadi satır satır inceleyelim. Kullanıcı
+girdisi almak ve sonra sonucu çıktı olarak yazdırmak için `io` girdi/çıktı
+kütüphanesini kapsam içine almamız lazım. `io` kütüphanesi `std` olarak bilinen
+standart kütüphaneden gelir:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:io}}
 ```
 
-By default, Rust has a set of items defined in the standard library that it
-brings into the scope of every program. This set is called the *prelude*, and
-you can see everything in it [in the standard library documentation][prelude].
+Varsayılan olarak Rust, her programın kapsamına getirdiği, standart kütüphanede
+tanımlı bir küme öğeye sahiptir. Bu kümeye *başlangıç* denir. Bunun içindeki
+her şeyi [standart kütüphane belgelendirmesinde][prelude] görebilirsiniz.
 
-If a type you want to use isn’t in the prelude, you have to bring that type
-into scope explicitly with a `use` statement. Using the `std::io` library
-provides you with a number of useful features, including the ability to accept
-user input.
+Eğer kullanmak istediğiniz bir tip başlangıçta değilse, bir `use` ifadesi ile
+harici olarak bu tipi kapsama getirmeniz gerekir. `std::io` kütüphanesini
+kullanmak size birçok kullanışlı özellik sağlar, kullanıcı girişini kabul etme
+yeteneği dahil.
 
-As you saw in Chapter 1, the `main` function is the entry point into the
-program:
+Bölüm 1'de gördüğünüz gibi, `main` fonksiyonu programa giriş noktasıdır:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:main}}
 ```
 
-The `fn` syntax declares a new function; the parentheses, `()`, indicate there
-are no parameters; and the curly bracket, `{`, starts the body of the function.
+`fn` sözdizimi yeni bir fonksiyon tanımlar; parantezler, `()`, hiçbir parametre
+olmadığına işarettir; ve süslü parantez, `{`, fonksiyonun gövdesini başlatır.
 
-As you also learned in Chapter 1, `println!` is a macro that prints a string to
-the screen:
+Ayrıca 1. bölümde öğrendiğiniz gibi, `println!`, ekrana bir string yazdıran
+bir makrodur:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:print}}
 ```
 
-This code is printing a prompt stating what the game is and requesting input
-from the user.
+Bu kod, oyunun ne olduğunu belirten ve kullanıcıdan bir girdi isteyen bir istem
+yazdırır.
 
-### Storing Values with Variables
+### Değerleri Değişkenler ile Saklamak
 
-Next, we’ll create a *variable* to store the user input, like this:
+Şimdi kullanıcı girdisini saklamak için bir *değişken* oluşturacağız, şu
+şekilde:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:string}}
 ```
 
-Now the program is getting interesting! There’s a lot going on in this little
-line. We use the `let` statement to create the variable. Here’s another example:
+Şimdi program ilginç olmaya başladı! Bu küçük satırda olan bir sürü şey var.
+Değişkeni oluşturmak için `let` ifadesini kullanırız. Bir diğer örnek:
 
 ```rust,ignore
-let apples = 5;
+let elmalar = 5;
 ```
 
-This line creates a new variable named `apples` and binds it to the value 5. In
-Rust, variables are immutable by default, meaning once we give the variable a
-value, the value won’t change. We’ll be discussing this concept in detail in
-the [“Variables and Mutability”][variables-and-mutability]<!-- ignore -->
-section in Chapter 3. To make a variable mutable, we add `mut` before the
-variable name:
+Bu satır `elmalar` isminde yeni bir değişken oluşturur ve bunu 5 değerine
+bağlar. Rust'ta değişkenler varsayılan olarak değişemezdir, yani bir değişkene
+bir defa değer verdik mi, değer bir daha değişmez. Bu kavramı ayrıntılı olarak
+3. bölümün [“Değişkenler ve Değişebilirlik”][variables-and-mutability] kısmında
+tartışacağız. Değişkeni değişebilir yapmak için değişken adından önce `mut`
+ekleriz:
 
 ```rust,ignore
-let apples = 5; // immutable
-let mut bananas = 5; // mutable
+let elmalar = 5; // değişemez
+let mut muzlar = 5; // değişebilir
 ```
 
-> Note: The `//` syntax starts a comment that continues until the end of the
-> line. Rust ignores everything in comments. We’ll discuss comments in more
-> detail in [Chapter 3][comments]<!-- ignore -->.
+> Not: `//` sözdizimi, satırın sonuna kadar devam edecek olan bir yorum
+> başlatır. Rust, yorumlardaki her şeyi boşverir. Yorumları ayrıntılı bir
+> şekilde [3. bölümde][comments] tartışacağız.
 
-Returning to the guessing game program, you now know that `let mut guess` will
-introduce a mutable variable named `guess`. The equal sign (`=`) tells Rust we
-want to bind something to the variable now. On the right of the equal sign is
-the value that `guess` is bound to, which is the result of calling
-`String::new`, a function that returns a new instance of a `String`.
-[`String`][string]<!-- ignore --> is a string type provided by the standard
-library that is a growable, UTF-8 encoded bit of text.
+Tahmin oyunu programına geri dönersek, şimdi `let mut tahmin`'in `tahmin`
+isminde, değişebilir bir değişken tanıttığını biliyorsunuz. Eşittir işareti
+(`=`) Rust'a bu değişkene bir şey bağlamak istediğimizi söyler. Eşittir
+işaretinin sağında `tahmin`'in bağlandığı değer vardır, bu değer ise
+`String::new` fonksiyonunu çağırmanın sonucudur. Bu fonksiyon bir `String`
+örneği döndürür. [`String`][string], standart kütüphane tarafından sağlanan,
+büyüyebilir, UTF-8 kodlanmış bir string tipidir.
 
-The `::` syntax in the `::new` line indicates that `new` is an associated
-function of the `String` type. An *associated function* is a function that’s
-implemented on a type, in this case `String`. This `new` function creates a
-new, empty string. You’ll find a `new` function on many types because it’s a
-common name for a function that makes a new value of some kind.
+`::new`'deki `::` sözdizimi, `new`'in `String` tipinin bir ilişkili fonksiyonu
+olduğuna işaret eder. *İlişkili fonksiyon*, bir tipte, burada `String`,
+gerçeklenen bir fonksiyondur. Bu `new` fonksiyonu yeni, boş bir string
+oluşturur. Birçok tipte `new` fonksiyonuna denk geleceksiniz çünkü bu, bir
+türde yeni bir değer yapmak için yaygın kullanılan bir fonksiyon adıdır.
 
-In full, the `let mut guess = String::new();` line has created a mutable
-variable that is currently bound to a new, empty instance of a `String`. Whew!
+Tam olarak `let mut tahmin = String::new();` satırı değişebilir bir değişken
+oluşturdu ve bu değişken şu anda `String`'in yeni, boş bir örneğine bağlı. Vay
+be!
 
-### Receiving User Input
+### Kullanıcı Girdisini Getirmek
 
-Recall that we included the input/output functionality from the standard
-library with `use std::io;` on the first line of the program. Now we’ll call
-the `stdin` function from the `io` module, which will allow us to handle user
-input:
+Programın ilk satırında `use std::io` ile standart kütüphaneden girdi/çıktı
+işlevselliği dahil ettiğimizi hatırlayın. Şimdi `io` modülünden `stdin`
+fonksiyonunu çağıracağız, bu fonksiyon ise kullanıcı girişini ele almamızı
+sağlayacak:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:read}}
 ```
 
-If we hadn’t imported the `io` library with `use std::io;` at the beginning of
-the program, we could still use the function by writing this function call as
-`std::io::stdin`. The `stdin` function returns an instance of
-[`std::io::Stdin`][iostdin]<!-- ignore -->, which is a type that represents a
-handle to the standard input for your terminal.
+Programın başında `io` kütüphanesini `use std::io;` ile içe aktarmamış olsak
+bile, bu fonksiyon çağrısını `std::io::stdin` olarak yazarak yine de bu
+fonksiyonu kullanabilirdik. `stdin` fonksiyonu, bir [`std::io::Stdin`][iostdin]
+örneği döndürür. Bu tip, terminalinizdeki standart girdi için bir ele alışı
+ifade eder.
 
-Next, the line `.read_line(&mut guess)` calls the [`read_line`][read_line]<!--
-ignore --> method on the standard input handle to get input from the user.
-We’re also passing `&mut guess` as the argument to `read_line` to tell it what
-string to store the user input in. The full job of `read_line` is to take
-whatever the user types into standard input and append that into a string
-(without overwriting its contents), so we therefore pass that string as an
-argument. The string argument needs to be mutable so the method can change the
-string’s content.
+Sonra `.read_line(&mut tahmin)`, kullanıcıdan girdi almak için standart girdi
+ele alışı üzerinde [`read_line`][read_line] metodunu çağırır. Ayrıca
+`&mut tahmin`'i `read_line`'a argüman olarak geçiriyoruz, böylece kullanıcı
+girdisini hangi string içinde saklayacağımızı belirtmiş oluyoruz.
+`read_line`'ın tam olarak işi, kullanıcının standart girdiye yazdığı her şeyi
+almak ve bunu bir string'e eklemektir (string'in içeriğinin üzerine yazmadan),
+bu sebeple bu string'i bir argüman olarak geçiriyoruz. String argümanı
+değişebilir olmalıdır, böylece metod, string'in içeriğini değiştirebilir.
 
-The `&` indicates that this argument is a *reference*, which gives you a way to
-let multiple parts of your code access one piece of data without needing to
-copy that data into memory multiple times. References are a complex feature,
-and one of Rust’s major advantages is how safe and easy it is to use
-references. You don’t need to know a lot of those details to finish this
-program. For now, all you need to know is that, like variables, references are
-immutable by default. Hence, you need to write `&mut guess` rather than
-`&guess` to make it mutable. (Chapter 4 will explain references more
-thoroughly.)
+`&`, bu argümanın bir *referans* olduğunu belirtir. Referanslar, kodunuzun
+birden çok kısmının bir veriye erişebilmesini sağlar, bu veriyi hafızaya birçok
+kez kopyalamak zorunda kalmadan. Referanslar karmaşık bir özelliktir ve Rust'ın
+ana avantajlarından biri, referansları kullanmanın ne kadar güvenli ve kolay
+olduğudur. Bu programı bitirmek için bu ayrıntıları bilmenize gerek yok.
+Şimdilik sadece referansların da, değişkenler gibi, varsayılan olarak değişemez
+olduklarını bilmeniz yeterli. Bu sebeple bunu değişebilir yapmak için `&tahmin`
+yerine `&mut tahmin` yazmanız gerekiyor. (4. bölüm, referansları ayrıntılı bir
+şekilde işleyecek.)
 
 <!-- Old heading. Do not remove or links may break. -->
 <a id="handling-potential-failure-with-the-result-type"></a>
 
-### Handling Potential Failure with `Result`
+### `Result` ile Potansiyel Başarısızlığı Ele Alma
 
-We’re still working on this line of code. We’re now discussing a third line of
-text, but note that it’s still part of a single logical line of code. The next
-part is this method:
+Hala bu kod satırı üzerinde çalışıyoruz. Şimdi bunun üçüncü satırını
+tartışıyoruz ama bunun tek bir mantıksal kod satırının bir parçası olduğuna
+dikkat edin. Bir sonraki parça şu metod:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:expect}}
 ```
 
-We could have written this code as:
+Bu kodu şu şekilde de yazabilirdik:
 
 ```rust,ignore
-io::stdin().read_line(&mut guess).expect("Failed to read line");
+io::stdin().read_line(&mut tahmin).expect("Satırı okumak başarısız");
 ```
 
-However, one long line is difficult to read, so it’s best to divide it. It’s
-often wise to introduce a newline and other whitespace to help break up long
-lines when you call a method with the `.method_name()` syntax. Now let’s
-discuss what this line does.
+Fakat uzun bir satırı okuması zordur, bu sebeple en iyisi onu bölmek.
+Genellikle, bir metodu `.metod_adı()` sözdizimi ile çağırdığınızda, uzun
+satırları bölmeye yardımcı olması için bir yenisatır ve diğer boşlukları
+eklemek akıllıcadır. Şimdi bu satırın ne yaptığını tartışalım.
 
-As mentioned earlier, `read_line` puts whatever the user enters into the string
-we pass to it, but it also returns a `Result` value. [`Result`][result]<!--
-ignore --> is an [*enumeration*][enums]<!-- ignore -->, often called an *enum*,
-which is a type that can be in one of multiple possible states. We call each
-possible state a *variant*.
+Daha önce bahsettiğimiz gibi, `read_line`, kullanıcı her ne girdiyse bunu, ona
+geçirdiğimiz string'e koyar ama ayrıca bir `Result` değeri döner.
+[`Result`][result], genellikle *enum* olarak isimlendirilen bir
+[*numaralandırma*][enums]dır. enum, birden çok muhtemel durumdan birinde
+bulunan bir tiptir. Bu muhtemel durumların her birine *varyant* diyeceğiz.
 
-[Chapter 6][enums]<!-- ignore --> will cover enums in more detail. The purpose
-of these `Result` types is to encode error-handling information.
+[6. bölüm][enums], enum'ları ayrıntılı bir şekilde kapsayacaktır. Bu `Result`
+tiplerinin amacı, hata ele alma bilgisini kodlamaktır.
 
-`Result`’s variants are `Ok` and `Err`. The `Ok` variant indicates the
-operation was successful, and inside `Ok` is the successfully generated value.
-The `Err` variant means the operation failed, and `Err` contains information
-about how or why the operation failed.
+`Result`'ın varyantları `Ok` ve `Err`'dir. `Ok` varyantı, işlemin başarılı
+olduğunu belirtir, içinde de başarılı bir şekilde üretilen değeri tutar. `Err`
+varyantı, işlemin başarısız olduğu anlamına gelir ve içinde işlemin nasıl ya da
+neden başarısız olduğuyla ilgili bilgi içerir.
 
-Values of the `Result` type, like values of any type, have methods defined on
-them. An instance of `Result` has an [`expect` method][expect]<!-- ignore -->
-that you can call. If this instance of `Result` is an `Err` value, `expect`
-will cause the program to crash and display the message that you passed as an
-argument to `expect`. If the `read_line` method returns an `Err`, it would
-likely be the result of an error coming from the underlying operating system.
-If this instance of `Result` is an `Ok` value, `expect` will take the return
-value that `Ok` is holding and return just that value to you so you can use it.
-In this case, that value is the number of bytes in the user’s input.
+`Result` tipinin değerleri, herhangi bir tipin değerleri gibi, üzerlerinde
+tanımlı metodlara sahiptir. Bir `Result` örneği, çağırabileceğiniz bir
+[`expect` metoduna][expect] sahiptir. Eğer bu `Result` örneği, bir `Err` değeri
+ise, `expect`, programın patlamasına neden olacak ve `expect`'e argüman olarak
+geçirdiğiniz mesajı görüntüleyecektir. Eğer `read_line` metodu bir `Err`
+döndürürse, bu muhtemelen alttaki işletim sisteminden gelen bir hatanın sonucu
+olacaktır. Eğer bu `Result` örneği bir `Ok` değeri ise, `expect`, `Ok`'in
+tuttuğu döndürme değerini alacak ve sadece bu değeri döndürecektir, böylece
+bunu kullanabilirsiniz. Bu durumda, bu değer, kullanıcının girdisindeki
+baytların sayısıdır.
 
-If you don’t call `expect`, the program will compile, but you’ll get a warning:
+Eğer `expect`'i çağırmazsanız, program derlenir ama bir uyarı alırsınız:
 
 ```console
 {{#include ../listings/ch02-guessing-game-tutorial/no-listing-02-without-expect/output.txt}}
 ```
 
-Rust warns that you haven’t used the `Result` value returned from `read_line`,
-indicating that the program hasn’t handled a possible error.
+Rust, `read_line`'dan döndürülen `Result` değerini kullanmadığınız konusunda
+sizi uyarıyor. Bu da programın muhtemel bir hatayı ele almadığı anlamına gelir.
 
-The right way to suppress the warning is to actually write error-handling code,
-but in our case we just want to crash this program when a problem occurs, so we
-can use `expect`. You’ll learn about recovering from errors in [Chapter
-9][recover]<!-- ignore -->.
+Uyarıyı bastırmanın doğru yolu, hata ele alma kodunu yazmaktır ancak bizim
+durumumuzda bir problem olduğunda programın patlamasını istiyoruz yani
+`expect`'i kullanabiliriz. [9. bölümde][recover] hataları iyileştirmek ile
+ilgili bilgi edineceksiniz.
 
-### Printing Values with `println!` Placeholders
+### `println!` Yer Tutucuları ile Değerleri Yazdırmak
 
-Aside from the closing curly bracket, there’s only one more line to discuss in
-the code so far:
+Kapayan süslü parantez dışında kodda tartışacak bir satır kaldı:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-01/src/main.rs:print_guess}}
 ```
 
-This line prints the string that now contains the user’s input. The `{}` set of
-curly brackets is a placeholder: think of `{}` as little crab pincers that hold
-a value in place. When printing the value of a variable, the variable name can
-go inside the curly brackets. When printing the result of evaluating an
-expression, place empty curly brackets in the format string, then follow the
-format string with a comma-separated list of expressions to print in each empty
-curly bracket placeholder in the same order. Printing a variable and the result
-of an expression in one call to `println!` would look like this:
+Bu satır, şimdi kullanıcı girdisini içeren string'i yazdırır. Süslü
+parantezler `{}` bir yer tutucudur: `{}` ikilisini, bir değeri yerinde tutan
+küçük yengeç kıskaçları olarak düşünün. Bir değişkenin değerini
+yazdırdığımızda, değişken ismi süslü parantezler içine girebilir. Bir deyimi
+değerlendirmenin sonucunu yazdıracağınız zaman, biçimlendirme string'i içine
+boş süslü parantezler koyun, sonra aynı sırada her boş süslü parantez içinde
+yazdırmak için virgüllerle ayırdığınız deyim listesini biçimlendirme
+string'inden sonra sıralayın. Bir değişkeni ve bir deyimin sonucunu
+`println!`'e bir çağrıda yazdırmak şu şekilde görünürdü:
 
 ```rust
 let x = 5;
 let y = 10;
 
-println!("x = {x} and y + 2 = {}", y + 2);
+println!("x = {x} ve y + 2 = {}", y + 2);
 ```
 
-This code would print `x = 5 and y + 2 = 12`.
+Bu kod `x = 5 ve y + 2 = 12` yazdıracaktır.
 
-### Testing the First Part
+### İlk Kısmı Test Etmek
 
-Let’s test the first part of the guessing game. Run it using `cargo run`:
+Haydi tahmin oyununun ilk kısmını test edelim. `cargo run` ile çalıştırın:
 
 <!-- manual-regeneration
 cd listings/ch02-guessing-game-tutorial/listing-02-01/
@@ -304,40 +305,41 @@ input 6 -->
 
 ```console
 $ cargo run
-   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+   Compiling tahmin_oyunu v0.1.0 (file:///projects/tahmin_oyunu)
     Finished dev [unoptimized + debuginfo] target(s) in 6.44s
-     Running `target/debug/guessing_game`
-Guess the number!
-Please input your guess.
+     Running `target/debug/tahmin_oyunu`
+Sayıyı tahmin et!
+Lütfen tahmininizi girin.
 6
-You guessed: 6
+Şunu tahmin ettiniz: 6
 ```
 
-At this point, the first part of the game is done: we’re getting input from the
-keyboard and then printing it.
+Bu noktada, oyunun ilk kısmı tamam: klavyeden girdi alıyoruz ve sonra bunu
+yazdırıyoruz.
 
-## Generating a Secret Number
+## Gizli bir Sayı Üretmek
 
-Next, we need to generate a secret number that the user will try to guess. The
-secret number should be different every time so the game is fun to play more
-than once. We’ll use a random number between 1 and 100 so the game isn’t too
-difficult. Rust doesn’t yet include random number functionality in its standard
-library. However, the Rust team does provide a [`rand` crate][randcrate] with
-said functionality.
+Şimdi kullanıcının tahmin edeceği gizli bir sayı üretmemiz gerekiyor. Gizli
+sayı her seferinde farklı olmalı, böylece oyun birden fazla kez oynamak için
+de eğlenceli olsun. 1 ve 100 arasında rasgele bir sayı kullanacağız, böylece
+oyun çok zor olmayacak. Rust henüz standart kütüphanesinde rasgele sayı
+işlevselliği içermiyor. Fakat Rust ekibi bahsedilen işlevselliğe sahip
+[`rand` crate'ini][randcrate] sağlamaktadır.
 
-### Using a Crate to Get More Functionality
+### Daha Fazla Fonksiyonellik için bir Crate Kullanmak
 
-Remember that a crate is a collection of Rust source code files. The project
-we’ve been building is a *binary crate*, which is an executable. The `rand`
-crate is a *library crate*, which contains code that is intended to be used in
-other programs and can’t be executed on its own.
+Bir crate'in Rust kaynak kod dosyalarının bir koleksiyonu olduğunu hatırlayın.
+İnşa ettiğimiz proje bir *ikili crate*, yani bir çalıştırılabilir. `rand`
+crate'i bir *kütüphane crate'i*, yani diğer programlarda kullanılmak üzere
+kodlar içerir ve kendi başına çalıştırılamaz.
 
-Cargo’s coordination of external crates is where Cargo really shines. Before we
-can write code that uses `rand`, we need to modify the *Cargo.toml* file to
-include the `rand` crate as a dependency. Open that file now and add the
-following line to the bottom, beneath the `[dependencies]` section header that
-Cargo created for you. Be sure to specify `rand` exactly as we have here, with
-this version number, or the code examples in this tutorial may not work:
+Cargo'nun harici crate'leri koordine etmesi, Cargo'nun en iyi olduğu şeydir.
+`rand` kullanan kodu yazmadan önce, bu crate'i bağımlılık olarak eklemek için
+*Cargo.toml* dosyasını değiştirmeliyiz. Bu dosyayı açın ve aşağıdaki satırı
+Cargo'nun sizin için oluşturduğu, dosyanın altındaki `[dependencies]` bölüm
+başlığının altına ekleyin. `rand`'ı tam olarak buradaki gibi, bu sürüm numarası
+ile belirttiğinize emin olun, yoksa bu kılavuzdaki kod örnekleri
+çalışmayabilir:
 
 <!-- When updating the version of `rand` used, also update the version of
 `rand` used in these files so they all match:
@@ -345,29 +347,30 @@ this version number, or the code examples in this tutorial may not work:
 * ch14-03-cargo-workspaces.md
 -->
 
-<span class="filename">Filename: Cargo.toml</span>
+<span class="filename">Dosya adı: Cargo.toml</span>
 
 ```toml
 {{#include ../listings/ch02-guessing-game-tutorial/listing-02-02/Cargo.toml:8:}}
 ```
 
-In the *Cargo.toml* file, everything that follows a header is part of that
-section that continues until another section starts. In `[dependencies]` you
-tell Cargo which external crates your project depends on and which versions of
-those crates you require. In this case, we specify the `rand` crate with the
-semantic version specifier `0.8.5`. Cargo understands [Semantic
-Versioning][semver]<!-- ignore --> (sometimes called *SemVer*), which is a
-standard for writing version numbers. The specifier `0.8.5` is actually
-shorthand for `^0.8.5`, which means any version that is at least 0.8.5 but
-below 0.9.0.
+*Cargo.toml* dosyasında, bir başlığı takip eden her şey, bu kısmın bir
+parçasıdır ve bir sonraki kısım başlayana kadar sürer. `[dependencies]`'de
+Cargo'ya projenizin hangi harici crate'lere bağımlı olduğunu ve bu crate'lerin
+hangi sürümlerinin gerekli olduğunu söylüyorsunuz. Bu durumda `rand` crate'ini
+`0.8.5` anlamsal sürüm belirteci ile belirtiyoruz. Cargo [Anlamsal
+Sürümlemeyi][semver] (bazen *SemVer* de denir) anlar. Bu, sürüm numaralarını
+yazmak için bir standarttır. `0.8.5` belirteci aslında `^0.8.5` için bir
+kısayoldur. Bu, en az 0.8.5 ama 0.9.0'dan küçük herhangi bir sürüm anlamına
+gelir.
 
-Cargo considers these versions to have public APIs compatible with version
-0.8.5, and this specification ensures you’ll get the latest patch release that
-will still compile with the code in this chapter. Any version 0.9.0 or greater
-is not guaranteed to have the same API as what the following examples use.
+Cargo, bu sürümlerin 0.8.5 sürümü ile uyumlu genel API'larının olduğunu
+düşünür, ve bu belirtim, bu bölümdeki kodlar ile derlenmesinde bir sorun
+olmayan en son yama yayınını alacağınıza emin olur. 0.9.0 ya da daha büyük
+herhangi bir sürümün, aşağıdaki örneklerin kullandığı ile aynı API'ı kullandığı
+garanti değildir.
 
-Now, without changing any of the code, let’s build the project, as shown in
-Listing 2-2.
+Şimdi herhangi bir kodu değiştirmeden, projeyi Listing 2-2'de gösterildiği gibi
+inşa edelim.
 
 <!-- manual-regeneration
 cd listings/ch02-guessing-game-tutorial/listing-02-02/
@@ -375,7 +378,7 @@ rm Cargo.lock
 cargo clean
 cargo build -->
 
-<Listing number="2-2" caption="The output from running `cargo build` after adding the rand crate as a dependency">
+<Listing number="2-2" caption="rand crate'ini bir bağımlılık olarak ekledikten sonra `cargo build` komutunun çıktısı">
 
 ```console
 $ cargo build
@@ -394,36 +397,36 @@ $ cargo build
    Compiling rand_core v0.6.3
    Compiling rand_chacha v0.3.1
    Compiling rand v0.8.5
-   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+   Compiling tahmin_oyunu v0.1.0 (file:///projects/tahmin_oyunu)
     Finished dev [unoptimized + debuginfo] target(s) in 2.53s
 ```
 
 </Listing>
 
-You may see different version numbers (but they will all be compatible with the
-code, thanks to SemVer!) and different lines (depending on the operating
-system), and the lines may be in a different order.
+Farklı sürüm numaraları görüyor olabilirsiniz (fakat SemVer sayesinde hepsi kod
+ile uyumlu olacaktır) ve işletim sistemine bağlı olarak sizde farklı satırlar
+da olabilir. Ayrıca satırlar farklı sıralamada da olabilir.
 
-When we include an external dependency, Cargo fetches the latest versions of
-everything that dependency needs from the *registry*, which is a copy of data
-from [Crates.io][cratesio]. Crates.io is where people in the Rust ecosystem
-post their open source Rust projects for others to use.
+Harici bir bağımlılık dahil ettiğimizde, Cargo, bu bağımlılığın ihtiyaç duyduğu
+her şeyin en son sürümünü *kayıt*tan çeker. Bu, [Crates.io][cratesio]'daki
+verinin bir kopyasıdır. Crates.io, Rust ekosistemindeki insanların, diğer
+insanların kullanması için açık kaynak Rust projelerini gönderdiği yerdir.
 
-After updating the registry, Cargo checks the `[dependencies]` section and
-downloads any crates listed that aren’t already downloaded. In this case,
-although we only listed `rand` as a dependency, Cargo also grabbed other crates
-that `rand` depends on to work. After downloading the crates, Rust compiles
-them and then compiles the project with the dependencies available.
+Kaydı güncelledikten sonra Cargo, `[dependencies]` bölümünü kontrol eder ve
+listelenen henüz indirilmemiş her crate'i indirir. Bu durumda sadece `rand`'ı
+listelemiş olsak da, Cargo ayrıca `rand`'ın çalışması için bağımlı olduğu diğer
+crate'leri de kaptı. Crate'leri indirdikten sonra, Rust onları derler ve
+sonrasında projeyi mevcut bağımlılıklar ile derler.
 
-If you immediately run `cargo build` again without making any changes, you
-won’t get any output aside from the `Finished` line. Cargo knows it has already
-downloaded and compiled the dependencies, and you haven’t changed anything
-about them in your *Cargo.toml* file. Cargo also knows that you haven’t changed
-anything about your code, so it doesn’t recompile that either. With nothing to
-do, it simply exits.
+Eğer hemen herhangi bir değişiklik yapmadan `cargo build`'ı tekrar koşarsanız,
+`Finished` satırı dışında herhangi bir çıktı almazsınız. Cargo, bağımlılıkları
+henüz indirip derlediğini ve bunlar hakkında *Cargo.toml* dosyanızda herhangi
+bir değişiklik yapmadığınızı bilir. Cargo ayrıca kodunuz ile ilgili herhangi
+bir değişiklik yapmadığınızı da bilir, yani kodu da yeniden derlemez. Herhangi
+bir şey olmadığı için sadece çıkış yapar.
 
-If you open the *src/main.rs* file, make a trivial change, and then save it and
-build again, you’ll only see two lines of output:
+Eğer *src/main.rs* dosyasını açıp küçük bir değişiklik yaparsanız, ve sonra
+kaydedip tekrar inşa ederseniz, sadece iki satır çıktı göreceksiniz:
 
 <!-- manual-regeneration
 cd listings/ch02-guessing-game-tutorial/listing-02-02/
@@ -432,44 +435,44 @@ cargo build -->
 
 ```console
 $ cargo build
-   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+   Compiling tahmin_oyunu v0.1.0 (file:///projects/tahmin_oyunu)
     Finished dev [unoptimized + debuginfo] target(s) in 2.53 secs
 ```
 
-These lines show that Cargo only updates the build with your tiny change to the
-*src/main.rs* file. Your dependencies haven’t changed, so Cargo knows it can
-reuse what it has already downloaded and compiled for those.
+Bu satırlar, *src/main.rs* dosyasına yapılan küçük değişiklik ile Cargo'nun
+sadece inşayı güncelleyeceğini gösterir. Bağımlılıklarınız değişmedi yani
+Cargo, indirip derlediği bağımlılıkları tekrar kullanabileceğini biliyor.
 
-#### Ensuring Reproducible Builds with the *Cargo.lock* File
+#### *Cargo.lock* Dosyası ile Yeniden Üretilebilir İnşalardan Emin Olmak
 
-Cargo has a mechanism that ensures you can rebuild the same artifact every time
-you or anyone else builds your code: Cargo will use only the versions of the
-dependencies you specified until you indicate otherwise. For example, say that
-next week version 0.8.6 of the `rand` crate comes out, and that version
-contains an important bug fix, but it also contains a regression that will
-break your code. To handle this, Rust creates the *Cargo.lock* file the first
-time you run `cargo build`, so we now have this in the *guessing_game*
-directory.
+Cargo, siz ya da bir başkası kodunuzu her inşa ettiğinde aynı eserin yeniden
+inşa edilebildiğinden emin olmanızı sağlayan bir mekanizmaya sahiptir: Cargo,
+siz diğer türlüsünü söyleyene kadar sadece belirttiğiniz bağımlılık sürümlerini
+kullanacaktır. Örneğin, bir sonraki hafta `rand` crate'inin 0.8.6 sürümü geldi
+diyelim ve bu sürüm önemli bir hata düzeltmesi içeriyor olsun, ama ayrıca
+kodunuzu kıracak bir gerileme de içeriyor. Bunu ele almak için Rust, ilk kez
+`cargo build` komutunu koştuğunuzda *Cargo.lock* dosyasını oluşturur, yani
+şimdi *tahmin_oyunu* dizininde bu dosya var.
 
-When you build a project for the first time, Cargo figures out all the versions
-of the dependencies that fit the criteria and then writes them to the
-*Cargo.lock* file. When you build your project in the future, Cargo will see
-that the *Cargo.lock* file exists and will use the versions specified there
-rather than doing all the work of figuring out versions again. This lets you
-have a reproducible build automatically. In other words, your project will
-remain at 0.8.5 until you explicitly upgrade, thanks to the *Cargo.lock* file.
-Because the *Cargo.lock* file is important for reproducible builds, it’s often
-checked into source control with the rest of the code in your project.
+Bir projeyi ilk kez inşa ettiğinizde, Cargo, kriterlere uyan tüm bağımlılık
+sürümlerini çözer ve bunları *Cargo.lock* dosyasına yazar. Gelecekte projenizi
+inşa ettiğinizde, Cargo, *Cargo.lock* dosyasının var olduğunu görecek ve
+tüm o sürümleri çözme işini tekrar yapmadan önce orada belirtilen sürümleri
+kullanacak. Bu, otomatik olarak yeniden üretilebilir inşalara sahip olmanızı
+sağlar. Diğer bir deyişle, *Cargo.lock* dosyası sayesinde projeniz, siz harici
+olarak yükseltmedikçe, 0.8.5'te kalacak. *Cargo.lock* dosyası, yeniden
+üretilebilir inşalar için önemli olduğundan, genellikle kaynak kontrolüne,
+projenizdeki diğer kodlar ile birlikte kaydedilir.
 
-#### Updating a Crate to Get a New Version
+#### Bir Crate'i Yeni bir Sürüme Güncellemek
 
-When you *do* want to update a crate, Cargo provides the command `update`,
-which will ignore the *Cargo.lock* file and figure out all the latest versions
-that fit your specifications in *Cargo.toml*. Cargo will then write those
-versions to the *Cargo.lock* file. In this case, Cargo will only look for
-versions greater than 0.8.5 and less than 0.9.0. If the `rand` crate has
-released the two new versions 0.8.6 and 0.9.0, you would see the following if
-you ran `cargo update`:
+Bir crate'i güncellemek *istediğinizde* Cargo'nun `update` komutunu
+kullanabilirsiniz. Bu komut *Cargo.lock* dosyasını boşverecek ve
+*Cargo.toml*'daki belirtimlerinize uyan en son sürümleri çözecektir. Cargo daha
+sonra bu sürümleri *Cargo.lock* dosyasına yazacaktır. Bu durumda Cargo sadece
+0.8.5'ten büyük ve 0.9.0'dan küçük sürümlere bakacaktır. Eğer `rand` crate'i,
+0.8.6 ve 0.9.0 olarak iki yeni sürüm yayınlamışsa, `cargo update`'i
+koştuğunuzda aşağıdakini görürsünüz:
 
 <!-- manual-regeneration
 cd listings/ch02-guessing-game-tutorial/listing-02-02/
@@ -483,32 +486,33 @@ $ cargo update
     Updating rand v0.8.5 -> v0.8.6
 ```
 
-Cargo ignores the 0.9.0 release. At this point, you would also notice a change
-in your *Cargo.lock* file noting that the version of the `rand` crate you are
-now using is 0.8.6. To use `rand` version 0.9.0 or any version in the 0.9.*x*
-series, you’d have to update the *Cargo.toml* file to look like this instead:
+Cargo, 0.9.0 sürümünü boşverir. Bu noktada ayrıca *Cargo.lock*'ınızda, şu anda
+kullandığınız `rand` crate'inin sürümünün 0.8.6 olduğunu ifade eden bir
+değişiklik olduğunu fark edeceksiniz. `rand`'ın 0.9.0 sürümünü ya da
+0.9.*x* serisindeki herhangi bir sürümü kullanmak için, *Cargo.toml* dosyasını
+şu şekilde güncellemeniz gerekir:
 
 ```toml
 [dependencies]
 rand = "0.9.0"
 ```
 
-The next time you run `cargo build`, Cargo will update the registry of crates
-available and reevaluate your `rand` requirements according to the new version
-you have specified.
+Bir sonraki `cargo build` çalıştırışınızda Cargo, mevcut crate'lerin kaydını
+güncelleyecek ve sizin `rand` gerekliliklerinizi, belirttiğiniz yeni sürüme
+göre yeniden değerlendirecek.
 
-There’s a lot more to say about [Cargo][doccargo]<!-- ignore --> and [its
-ecosystem][doccratesio]<!-- ignore -->, which we’ll discuss in Chapter 14, but
-for now, that’s all you need to know. Cargo makes it very easy to reuse
-libraries, so Rustaceans are able to write smaller projects that are assembled
-from a number of packages.
+[Cargo][doccargo] ve [ekosistemi][doccratesio] hakkında söylenecek daha birçok
+şey var, ki bunları 14. bölümde tartışacağız, fakat şimdilik bu kadarını
+bilmeniz yeterli. Cargo, kütüphaneleri yeniden kullanmayı oldukça
+kolaylaştırır böylece Rustacean'lar, birkaç paketin bir araya gelmesi ile
+oluşmuş daha küçük projeler yazabiliyorlar.
 
-### Generating a Random Number
+### Rasgele bir Sayı Üretmek
 
-Let’s start using `rand` to generate a number to guess. The next step is to
-update *src/main.rs*, as shown in Listing 2-3.
+Haydi `rand` kullanarak tahmin etmek için bir sayı üretelim. Sonraki adım,
+Listing 2-3'te gösterildiği gibi *src/main.rs*'i güncellemektir.
 
-<Listing number="2-3" file-name="src/main.rs" caption="Adding code to generate a random number">
+<Listing number="2-3" file-name="src/main.rs" caption="Rasgele bir sayı üretmek için kod eklemek">
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-03/src/main.rs:all}}
@@ -516,35 +520,36 @@ update *src/main.rs*, as shown in Listing 2-3.
 
 </Listing>
 
-First we add the line `use rand::Rng;`. The `Rng` trait defines methods that
-random number generators implement, and this trait must be in scope for us to
-use those methods. Chapter 10 will cover traits in detail.
+İlk olarak `use rand:Rng;` satırını ekledik. `Rng` trait'i, rasgele sayı
+üreteçlerinin gerçeklediği metodları tanımlar, ve bu metodları kullanabilmemiz
+için bu trait, kapsam içinde olmalıdır. 10. bölüm, trait'leri ayrıntılı bir
+şekilde kapsayacaktır.
 
-Next, we’re adding two lines in the middle. In the first line, we call the
-`rand::thread_rng` function that gives us the particular random number
-generator we’re going to use: one that is local to the current thread of
-execution and is seeded by the operating system. Then we call the `gen_range`
-method on the random number generator. This method is defined by the `Rng`
-trait that we brought into scope with the `use rand::Rng;` statement. The
-`gen_range` method takes a range expression as an argument and generates a
-random number in the range. The kind of range expression we’re using here takes
-the form `start..=end` and is inclusive on the lower and upper bounds, so we
-need to specify `1..=100` to request a number between 1 and 100.
+Şimdi ortaya iki satır ekliyoruz. İlk satırda, kullanacağımız belirli rasgele
+sayı üretecini bize veren `rand::thread_rng` fonksiyonunu çağırıyoruz. Bu
+üreteç, çalıştırmanın şu anki thread'inde yerel olarak yer alan ve işletim
+sistemi tarafından beslenen bir üreteçtir. Sonrasında rasgele sayı üreteci
+üzerinde `gen_range` metodunu çağırıyoruz. Bu metod, `use rand::Rng;` ifadesi
+ile kapsam içine getirdiğimiz `Rng` trait'i tarafından tanımlanır. `gen_range`
+metodu argüman olarak bir aralık deyimi alır ve bu aralıkta rasgele bir sayı
+üretir. Burada kullandığımız aralık deyiminin türü `başlangıç..=son`
+biçimindedir ve, aşağıdaki ve yukarıdaki sınırları içine alır, yani 1 ile 100
+arasında bir sayı istemek için `1..=100` ifadesini kullanmalıyız.
 
-> Note: You won’t just know which traits to use and which methods and functions
-> to call from a crate, so each crate has documentation with instructions for
-> using it. Another neat feature of Cargo is that running the `cargo doc
-> --open` command will build documentation provided by all your dependencies
-> locally and open it in your browser. If you’re interested in other
-> functionality in the `rand` crate, for example, run `cargo doc --open` and
-> click `rand` in the sidebar on the left.
+> Not: Hangi trait'i kullanacağınızı ve bir crate'teki hangi metod veya
+> fonksiyonu çağırmanız gerektiğini bir anda bilemezsiniz, bu sebeple her
+> crate, bu crate'i nasıl kullanacağınızı açıklayan bir belgelendirmeye
+> sahiptir. Cargo'nun bir diğer güzel özelliği şudur: `cargo doc --open`
+> komutu, yerelinizdeki bağımlılıklar tarafından sağlanan tüm belgelendirmeyi
+> inşa eder ve bunu tarayıcınızda açar. Örneğin, eğer `rand` crate'indeki bir
+> diğer fonksiyonellik ile ilgileniyorsanız, `cargo doc --open` komutunu verin
+> ve soldaki kenar çubuğunda `rand`'a tıklayın.
 
-The second new line prints the secret number. This is useful while we’re
-developing the program to be able to test it, but we’ll delete it from the
-final version. It’s not much of a game if the program prints the answer as soon
-as it starts!
+İkinci yeni satır gizli numarayı yazdırır. Bu, programı geliştirirken, test
+edebilmek için kullanışlıdır, fakat bunu son sürümden sileceğiz. Eğer program,
+başlar başlamaz cevabı yazdırırsa, bu pek oyun olmaz, değil mi?!
 
-Try running the program a few times:
+Programı birkaç kez koşmayı deneyin:
 
 <!-- manual-regeneration
 cd listings/ch02-guessing-game-tutorial/listing-02-03/
@@ -556,35 +561,35 @@ cargo run
 
 ```console
 $ cargo run
-   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+   Compiling tahmin_oyunu v0.1.0 (file:///projects/tahmin_oyunu)
     Finished dev [unoptimized + debuginfo] target(s) in 2.53s
-     Running `target/debug/guessing_game`
-Guess the number!
-The secret number is: 7
-Please input your guess.
+     Running `target/debug/tahmin_oyunu`
+Sayıyı tahmin et!
+Gizli sayı: 7
+Lütfen tahmininizi girin.
 4
-You guessed: 4
+Şunu tahmin ettiniz: 4
 
 $ cargo run
     Finished dev [unoptimized + debuginfo] target(s) in 0.02s
-     Running `target/debug/guessing_game`
-Guess the number!
-The secret number is: 83
-Please input your guess.
+     Running `target/debug/tahmin_oyunu`
+Sayıyı tahmin et!
+Gizli sayı: 83
+Lütfen tahmininizi girin.
 5
-You guessed: 5
+Şunu tahmin ettiniz: 5
 ```
 
-You should get different random numbers, and they should all be numbers between
-1 and 100. Great job!
+Farklı rasgele sayılar görmelisiniz ve bunlar 1 ile 100 arasında olmalıdır. İyi
+iş!
 
-## Comparing the Guess to the Secret Number
+## Tahmin ile Gizli Sayıyı Karşılaştırmak
 
-Now that we have user input and a random number, we can compare them. That step
-is shown in Listing 2-4. Note that this code won’t compile just yet, as we will
-explain.
+Şimdi kullanıcı girdisi ve rasgele sayıya sahip olduğumuza göre, bunları
+karşılaştırabiliriz. Bu adım Listing 2-4'te gösterilmiştir. Bu kod henüz
+derlenmeyecek, bunun nedenini birazdan açıklayacağız.
 
-<Listing number="2-4" file-name="src/main.rs" caption="Handling the possible return values of comparing two numbers">
+<Listing number="2-4" file-name="src/main.rs" caption="İki sayıyı karşılaştırmanın muhtemel döndürme değerlerini ele alma">
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-04/src/main.rs:here}}
@@ -592,44 +597,43 @@ explain.
 
 </Listing>
 
-First we add another `use` statement, bringing a type called
-`std::cmp::Ordering` into scope from the standard library. The `Ordering` type
-is another enum and has the variants `Less`, `Greater`, and `Equal`. These are
-the three outcomes that are possible when you compare two values.
+İlk olarak bir diğer `use` ifadesi ekliyoruz ve standart kütüphaneden
+`std:cmp::Ordering` tipini kapsam içine getiriyoruz. `Ordering` tipi, `Less`,
+`Greater` ve `Equal` varyantlarına sahip bir diğer enum'dır. Bunlar, iki değeri
+karşılaştırdığınızda muhtemel üç sonuçtur.
 
-Then we add five new lines at the bottom that use the `Ordering` type. The
-`cmp` method compares two values and can be called on anything that can be
-compared. It takes a reference to whatever you want to compare with: here it’s
-comparing `guess` to `secret_number`. Then it returns a variant of the
-`Ordering` enum we brought into scope with the `use` statement. We use a
-[`match`][match]<!-- ignore --> expression to decide what to do next based on
-which variant of `Ordering` was returned from the call to `cmp` with the values
-in `guess` and `secret_number`.
+Sonrasında aşağıya, `Ordering` tipini kullanan 5 yeni satır ekliyoruz. `cmp`
+metodu iki değeri karşılaştırır ve karşılaştırılabilir herhangi bir şey
+üzerinden çağrılabilir. Argüman olarak, ne ile karşılaştırmak istiyorsanız, onu
+alır: burada `tahmin` ile `gizli_sayı`yı karşılaştırıyor. Sonrasında `use`
+ifadesi ile kapsama getirdiğimiz `Ordering` enum'ının bir varyantını
+döndürüyor. `cmp`'ye `guess` ve `gizli_sayı` değerlerini vererek hangi
+`Ordering` varyantının döndüğüne bağlı olarak sonraki adımda ne yapacağımıza
+karar vermek için [`match`][match] deyimini kullanacağız.
 
-A `match` expression is made up of *arms*. An arm consists of a *pattern* to
-match against, and the code that should be run if the value given to `match`
-fits that arm’s pattern. Rust takes the value given to `match` and looks
-through each arm’s pattern in turn. Patterns and the `match` construct are
-powerful Rust features: they let you express a variety of situations your code
-might encounter and they make sure you handle them all. These features will be
-covered in detail in Chapter 6 and Chapter 18, respectively.
+Bir `match` deyimi, *kollar*dan meydana gelir. Bir kol, eşleştirme yapmak için
+bir *desen* ve `match`'e verilen değer bu kolun desenine uyarsa çalıştırılması
+gereken koddan oluşur. Rust, `match`'e verilen değeri alır ve her kolun
+desenine sırayla bakar. Desenler ve `match` yapısı, güçlü Rust özellikleridir:
+Bunlar kodunuzun karşılaşabileceği birçok durumu ifade edebilmenizi ve bunların
+tümünü ele aldığınıza emin olmanızı sağlar. Bu özellikler ayrıntılı olarak
+sırasıyla 6. ve 18. bölümde kapsanacak.
 
-Let’s walk through an example with the `match` expression we use here. Say that
-the user has guessed 50 and the randomly generated secret number this time is
-38.
+Hadi burada kullandığımız `match` deyimi ile bir örnek yapalım. Mesela
+kullanıcının 50 tahmin ettiği sayının 50 olduğunu ve rasgele oluşturulan gizli
+sayının da 38 olduğunu varsayalım.
 
-When the code compares 50 to 38, the `cmp` method will return
-`Ordering::Greater` because 50 is greater than 38. The `match` expression gets
-the `Ordering::Greater` value and starts checking each arm’s pattern. It looks
-at the first arm’s pattern, `Ordering::Less`, and sees that the value
-`Ordering::Greater` does not match `Ordering::Less`, so it ignores the code in
-that arm and moves to the next arm. The next arm’s pattern is
-`Ordering::Greater`, which *does* match `Ordering::Greater`! The associated
-code in that arm will execute and print `Too big!` to the screen. The `match`
-expression ends after the first successful match, so it won’t look at the last
-arm in this scenario.
+Kod, 50 ile 38'i karşılaştırdığında, `cmp` metodu `Ordering::Greater`'ı
+döndürecektir çünkü 50, 38'den büyüktür. `match` deyimi `Ordering::Greater`
+değerini alacak ve her kolun desenini kontrol etmeye başlayacak. İlk kolun
+deseni olan `Ordering::Less`'e bakacak ancak `Ordering::Greater`'ın
+`Ordering::Less` ile eşleşmediğini görecek, bu sebeple bu koldaki kodu
+boşverecek ve sonraki kola ilerleyecek. Bir sonraki kolun deseni
+`Ordering::Greater`, ki bu desen `Ordering::Greater` ile *eşleşir*! Bu koldaki
+ilişkili kod çalışacak ve ekrana `Çok büyük!` yazdıracaktır. `match` deyimi,
+ilk başarılı eşleşmeden sonra biter, yani bu senaryoda son kola bakmayacaktır.
 
-However, the code in Listing 2-4 won’t compile yet. Let’s try it:
+Fakat, Listing 2-4'teki kod henüz derlenmiyor. Hadi deneyelim:
 
 <!--
 The error numbers in this output should be that of the code **WITHOUT** the
@@ -640,80 +644,84 @@ anchor or snip comments
 {{#include ../listings/ch02-guessing-game-tutorial/listing-02-04/output.txt}}
 ```
 
-The core of the error states that there are *mismatched types*. Rust has a
-strong, static type system. However, it also has type inference. When we wrote
-`let mut guess = String::new()`, Rust was able to infer that `guess` should be
-a `String` and didn’t make us write the type. The `secret_number`, on the other
-hand, is a number type. A few of Rust’s number types can have a value between 1
-and 100: `i32`, a 32-bit number; `u32`, an unsigned 32-bit number; `i64`, a
-64-bit number; as well as others. Unless otherwise specified, Rust defaults to
-an `i32`, which is the type of `secret_number` unless you add type information
-elsewhere that would cause Rust to infer a different numerical type. The reason
-for the error is that Rust cannot compare a string and a number type.
+Hata, *eşleşmeyen tipler* olduğunu belirtmektedir. Rust, güçlü, statik bir tip
+sistemine sahiptir. Fakat ayrıca tip çıkarımına sahiptir.
+`let mut tahmin = String::new()` yazdığımızda Rust, bu `tahmin`'in bir `String`
+olması gerektiği çıkarımını yapabilir ve bizi, bu tipi yazmak zorunda bırakmaz.
+Diğer yandan `gizli_sayı`, bir sayı tipidir. Birkaç Rust sayı tipi, 1 ile 100
+arasındaki bir değere sahip olabilir: `i32`, 32-bit bir sayı; `u32`, işaretsiz
+32-bit bir sayı; `i64`, 64-bit bir sayı; ve diğerleri. Başka türlüsü
+belirtilmediği sürece Rust, `i32`'yi kullanır. Bu durumda `gizli_sayı`nın tipi
+`i32`'dir, tabi başka bir yere tip bilgisi eklememişseniz, ki bu durumda Rust,
+farklı bir sayısal tipe çıkarım yapacaktır. Hatanın sebebi, Rust'ın bir string
+ile bir sayı tipini karşılaştıramıyor olmasıdır.
 
-Ultimately, we want to convert the `String` the program reads as input into a
-number type so we can compare it numerically to the secret number. We do so by
-adding this line to the `main` function body:
+Sonuç olarak, programın girdi olarak okuduğu `String`'i bir sayı tipine
+çevirmek istiyoruz, böylece bunu sayısal olarak gizli sayıyla
+karşılaştırabiliriz. Bunu, şu satırı `main` fonksiyon gövdesine ekleyerek
+yapacağız:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/no-listing-03-convert-string-to-number/src/main.rs:here}}
 ```
 
-The line is:
+Satır şu:
 
 ```rust,ignore
-let guess: u32 = guess.trim().parse().expect("Please type a number!");
+let tahmin: u32 = tahmin.trim().parse().expect("Lütfen bir sayı girin!");
 ```
 
-We create a variable named `guess`. But wait, doesn’t the program already have
-a variable named `guess`? It does, but helpfully Rust allows us to shadow the
-previous value of `guess` with a new one. *Shadowing* lets us reuse the `guess`
-variable name rather than forcing us to create two unique variables, such as
-`guess_str` and `guess`, for example. We’ll cover this in more detail in
-[Chapter 3][shadowing]<!-- ignore -->, but for now, know that this feature is
-often used when you want to convert a value from one type to another type.
+`tahmin` isminde bir değişken oluşturduk. Ama durun, programda zaten `tahmin`
+isminde bir değişken yok muydu? Vardı fakat Rust bize yardımcı olmak için
+`tahmin`in önceki değerini yeni bir değer ile gölgelememize izin verir.
+*Gölgeleme*, `tahmin_str` ve `tahmin` gibi iki farklı değişken tanımlamamıza
+gerek kalmadan `tahmin` değişken adını tekrar kullanmamızı sağlar. Bunu
+ayrıntılı olarak [3. bölümde][shadowing] ele alacağız ancak şimdilik, bu
+özelliğin, bir tipi diğer bir tipe dönüştürmek istediğimizde sıklıkla
+kullanıldığını bilin.
 
-We bind this new variable to the expression `guess.trim().parse()`. The `guess`
-in the expression refers to the original `guess` variable that contained the
-input as a string. The `trim` method on a `String` instance will eliminate any
-whitespace at the beginning and end, which we must do to be able to compare the
-string to the `u32`, which can only contain numerical data. The user must press
-<kbd>enter</kbd> to satisfy `read_line` and input their guess, which adds a
-newline character to the string. For example, if the user types <kbd>5</kbd> and
-presses <kbd>enter</kbd>, `guess` looks like this: `5\n`. The `\n` represents
-“newline.” (On Windows, pressing <kbd>enter</kbd> results in a carriage return
-and a newline, `\r\n`.) The `trim` method eliminates `\n` or `\r\n`, resulting
-in just `5`.
+Bu değişkeni `tahmin.trim().parse()` deyimine atadık. Deyimdeki `tahmin`,
+girdiyi bir string olarak içeren orijinal `tahmin` değişkenini kastediyor. Bir
+`String` örneğindeki `trim` metodu, baştaki ve sondaki tüm boşlukları
+eleyecektir. Bunu, string'i `u32` ile karşılaştırmak için yapmalıyız çünkü
+`u32` sadece sayısal veri içerebilir. Kullanıcı `read_line`'ı memnun etmek ve
+tahminini girmek için <kbd>enter</kbd> tuşuna basmalıdır, ki bu da string'e bir
+yenisatır karakteri ekleyecektir. Örneğin, eğer kullanıcı <kbd>5</kbd>
+girmişse ve <kbd>enter</kbd> tuşuna basmışsa, `tahmin` şunun gibi görünecektir:
+`5\n`. `\n`, “yenisatır”ı ifade eder. (Windows'ta <kbd>enter</kbd> tuşuna
+basmak, bir taşıma geri dönüşü ve bir yeni satır ile sonuçlanacaktır: `\r\n`.)
+`trim` metodu, `\n` ya da `\r\n`'yi eler ve sadece `5` kalır.
 
-The [`parse` method on strings][parse]<!-- ignore --> converts a string to
-another type. Here, we use it to convert from a string to a number. We need to
-tell Rust the exact number type we want by using `let guess: u32`. The colon
-(`:`) after `guess` tells Rust we’ll annotate the variable’s type. Rust has a
-few built-in number types; the `u32` seen here is an unsigned, 32-bit integer.
-It’s a good default choice for a small positive number. You’ll learn about
-other number types in [Chapter 3][integers]<!-- ignore -->.
+[String'lerdeki `parse` metodu][parse], bir string'i başka bir tipe dönüştürür.
+Burada bunu, bir string'den bir sayıya dönüştürmek için kullanıyoruz. Rust'a
+istediğimiz tam sayı tipini söylemeliyiz: `let tahmin: u32`. `tahmin`den
+sonraki (`:`), Rust'a bizim değişkenin tipini bildireceğimizi söyler. Rust
+birkaç gömülü sayı tipine sahiptir; burada görünen `u32`, işaretsiz, 32-bit bir
+tamsayıdır. Bu, pozitif küçük bir sayı için iyi bir varsayılan seçimdir. Diğer
+sayı tipleri hakkında [3. bölümde][integers] bilgi edineceksiniz.
 
-Additionally, the `u32` annotation in this example program and the comparison
-with `secret_number` means Rust will infer that `secret_number` should be a
-`u32` as well. So now the comparison will be between two values of the same
-type!
+Ek olarak bu örnek programdaki `u32` bildirimi ve `gizli_sayı` ile
+karşılaştırma, Rust'ın bu `gizli_sayı`nın da bir `u32` olması gerektiğini
+çıkaracağı anlamına gelir. Yani şimdi karşılaştırma aynı tipin iki değeri
+arasında olacak!
 
-The `parse` method will only work on characters that can logically be converted
-into numbers and so can easily cause errors. If, for example, the string
-contained `A👍%`, there would be no way to convert that to a number. Because it
-might fail, the `parse` method returns a `Result` type, much as the `read_line`
-method does (discussed earlier in [“Handling Potential Failure with
-`Result`”](#handling-potential-failure-with-result)<!-- ignore-->). We’ll treat
-this `Result` the same way by using the `expect` method again. If `parse`
-returns an `Err` `Result` variant because it couldn’t create a number from the
-string, the `expect` call will crash the game and print the message we give it.
-If `parse` can successfully convert the string to a number, it will return the
-`Ok` variant of `Result`, and `expect` will return the number that we want from
-the `Ok` value.
+`parse` metodu, mantıken sayılara dönüştürülebilen karakterler üzerinde işe
+yarayacaktır yani kolaylıkla hatalara sebep olabilir. Örneğin, eğer bir string
+`A👍%` karakterlerini içeriyorsa, bunu bir sayıya dönüştürmenin herhangi bir
+yolu olmayacaktır. Başarısız olabileceği için, `parse` metodu bir `Result` tipi
+döner, aynı `read_line` metodunun yaptığı gibi (daha önce [“`Result` ile
+Potansiyel Başarısızlığı Ele
+Alma”](#result-ile-potansiyel-başarısızlığı-ele-alma) bölümünde tartışılmıştı).
+Bu `Result`'a da `expect` metodundaki kullanım ile aynı şekilde davranacağız.
+Eğer `parse`, string'den bir sayı oluşturamadığı için bir `Err` `Result`
+varyantı döndürürse, `expect` çağrısı oyunu patlatacak ve verdiğimiz mesajı
+yazdıracak. Eğer `parse`, başarılı bir şekilde string'i bir sayıya
+dönüştürebilirse, `Result`'ın `Ok` varyantını döndürecek, ve expect, `Ok`
+değerinden bizim istediğimiz sayıyı döndürecek.
 
-Let’s run the program now:
+Hadi şimdi programı koşalım:
 
 <!-- manual-regeneration
 cd listings/ch02-guessing-game-tutorial/no-listing-03-convert-string-to-number/
@@ -723,47 +731,49 @@ cargo run
 
 ```console
 $ cargo run
-   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+   Compiling tahmin_oyunu v0.1.0 (file:///projects/tahmin_oyunu)
     Finished dev [unoptimized + debuginfo] target(s) in 0.43s
-     Running `target/debug/guessing_game`
-Guess the number!
-The secret number is: 58
-Please input your guess.
+     Running `target/debug/tahmin_oyunu`
+Sayıyı tahmin et!
+Gizli sayı: 58
+Lütfen tahmininizi girin.
   76
-You guessed: 76
-Too big!
+Şunu tahmin ettiniz: 76
+Çok büyük!
 ```
 
-Nice! Even though spaces were added before the guess, the program still figured
-out that the user guessed 76. Run the program a few times to verify the
-different behavior with different kinds of input: guess the number correctly,
-guess a number that is too high, and guess a number that is too low.
+Güzel! Tahminden önce boşluklar eklenmiş olsa da, program yine de kullanıcının
+76'yı tahmin ettiğini anladı. Farklı türde girdiler ile farklı davranışları
+doğrulamak için programı birkaç kez çalıştırın: sayıyı doğru tahmin edin, çok
+büyük bir sayı tahmin edin ve çok küçük bir sayı tahmin edin.
 
-We have most of the game working now, but the user can make only one guess.
-Let’s change that by adding a loop!
+Oyunun büyük kısmı artık çalışıyor fakat kullanıcı sadece bir tahmin
+yapabiliyor. Hadi bunu, bir döngü ekleyerek değiştirelim!
 
-## Allowing Multiple Guesses with Looping
+## Döngüleme ile Birden Fazla Tahmine İzin Verme
 
-The `loop` keyword creates an infinite loop. We’ll add a loop to give users
-more chances at guessing the number:
+`loop` anahtar kelimesi sonsuz bir döngüye sebep olur. Kullanıcıya, sayıyı
+tahmin etmede daha fazla şans vermek için bir döngü ekleyeceğiz:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/no-listing-04-looping/src/main.rs:here}}
 ```
 
-As you can see, we’ve moved everything from the guess input prompt onward into
-a loop. Be sure to indent the lines inside the loop another four spaces each
-and run the program again. The program will now ask for another guess forever,
-which actually introduces a new problem. It doesn’t seem like the user can quit!
+Gördüğünüz gibi, tahmin girdisi isteminden sonraki her şeyi bir döngüye
+taşıdık. Döngünün içindeki her satırı dört boşluk daha girintilediğinizden emin
+olun ve programı tekrar çalıştırın. Şimdi program bir sonraki tahmin için
+sonsuza dek soracak, ki bu bir başka probleme neden oluyor. Kullanıcı çıkış
+yapamıyor gibi görünüyor!
 
-The user could always interrupt the program by using the keyboard shortcut
-<kbd>ctrl</kbd>-<kbd>c</kbd>. But there’s another way to escape this insatiable
-monster, as mentioned in the `parse` discussion in [“Comparing the Guess to the
-Secret Number”](#comparing-the-guess-to-the-secret-number)<!-- ignore -->: if
-the user enters a non-number answer, the program will crash. We can take
-advantage of that to allow the user to quit, as shown here:
+Kullanıcı her zaman programı <kbd>ctrl</kbd>-<kbd>c</kbd> klavye kısayolu
+kullanarak kesebilir. Fakat bu doyumsuz canavardan kaçınmak için bir başka yol
+daha var, ki bundan [“Tahmin ile Gizli Sayıyı
+Karşılaştırmak”](#tahmin-ile-gizli-sayıyı-karşılaştırmak) bölümündeki `parse`
+tartışmasında bahsetmiştik: eğer kullanıcı sayı olmayan bir cevap girerse,
+program patlayacaktır. Bunu, kullanıcının çıkış yapmasına izin vermek için şu
+şekilde kullanabiliriz:
 
 <!-- manual-regeneration
 cd listings/ch02-guessing-game-tutorial/no-listing-04-looping/
@@ -776,55 +786,59 @@ quit
 
 ```console
 $ cargo run
-   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+   Compiling tahmin_oyunu v0.1.0 (file:///projects/tahmin_oyunu)
     Finished dev [unoptimized + debuginfo] target(s) in 1.50s
-     Running `target/debug/guessing_game`
-Guess the number!
-The secret number is: 59
-Please input your guess.
+     Running `target/debug/tahmin_oyunu`
+Sayıyı tahmin et!
+Gizli sayı: 59
+Lütfen tahmininizi girin.
 45
-You guessed: 45
-Too small!
-Please input your guess.
+Şunu tahmin ettiniz: 45
+Çok küçük!
+Lütfen tahmininizi girin.
 60
-You guessed: 60
-Too big!
-Please input your guess.
+Şunu tahmin ettiniz: 60
+Çok büyük!
+Lütfen tahmininizi girin.
 59
-You guessed: 59
-You win!
-Please input your guess.
-quit
-thread 'main' panicked at 'Please type a number!: ParseIntError { kind: InvalidDigit }', src/main.rs:28:47
+Şunu tahmin ettiniz: 59
+Kazandın!
+Lütfen tahmininizi girin.
+çık
+thread 'main' panicked at 'Lütfen bir sayı girin!: ParseIntError { kind: InvalidDigit }', src/main.rs:28:47
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
-Typing `quit` will quit the game, but as you’ll notice, so will entering any
-other non-number input. This is suboptimal, to say the least; we want the game
-to also stop when the correct number is guessed.
+`çık` yazmak oyundan çıkılmasına neden olacak, fakat fark edebileceğiniz gibi
+diğer sayı olmayan girdiler de buna neden olacak. Bu, en basit tabirle
+standardın altındadır; ayrıca doğru sayı tahmin edildiğinde oyunun durmasını
+istiyoruz.
 
-### Quitting After a Correct Guess
+### Doğru bir Tahminden Sonra Çıkma
 
-Let’s program the game to quit when the user wins by adding a `break` statement:
+Hadi bir `break` ifadesi ekleyerek oyunu, kullanıcı kazandığı zaman çıkacak
+şekilde programlayalım.
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/no-listing-05-quitting/src/main.rs:here}}
 ```
 
-Adding the `break` line after `You win!` makes the program exit the loop when
-the user guesses the secret number correctly. Exiting the loop also means
-exiting the program, because the loop is the last part of `main`.
+`Kazandın!` ifadesinden sonra bir `break` eklemek, kullanıcı gizli sayıyı doğru
+bir şekilde tahmin ettiğinde programın döngüden çıkmasına sebep olur. Döngüden
+çıkmak ayrıca programdan da çıkmak anlamına gelir çünkü döngü `main`'in son
+kısmıdır.
 
-### Handling Invalid Input
+### Geçersiz Girdiyi Ele Almak
 
-To further refine the game’s behavior, rather than crashing the program when
-the user inputs a non-number, let’s make the game ignore a non-number so the
-user can continue guessing. We can do that by altering the line where `guess`
-is converted from a `String` to a `u32`, as shown in Listing 2-5.
+Oyunun davranışını biraz daha hassaslaştırmak için, kullanıcı sayı dışında bir
+girdi girdiğinde programı patlatmak yerine, hadi programın sayı olmayan
+girdileri boşvermesini sağlayalım, böylece kullanıcı tahmin etmeye devam
+edebilir. Bunu, `tahmin`in `String`'den `u32`'ye dönüştürüldüğü satırı
+düzenleyerek yapabiliriz, Listing 2-5'te gösterildiği gibi.
 
-<Listing number="2-5" file-name="src/main.rs" caption="Ignoring a non-number guess and asking for another guess instead of crashing the program">
+<Listing number="2-5" file-name="src/main.rs" caption="Sayı olmayan tahminleri boşvermek ve programın patlaması yerine bir diğer tahmin isteme">
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-05/src/main.rs:here}}
@@ -832,29 +846,29 @@ is converted from a `String` to a `u32`, as shown in Listing 2-5.
 
 </Listing>
 
-We switch from an `expect` call to a `match` expression to move from crashing
-on an error to handling the error. Remember that `parse` returns a `Result`
-type and `Result` is an enum that has the variants `Ok` and `Err`. We’re using
-a `match` expression here, as we did with the `Ordering` result of the `cmp`
-method.
+`expect` çağrısından `match` deyimine geçtik, böylece programı bir hatada
+patlatmaktan hatayı ele almaya da geçmiş olduk. `parse`'ın bir `Result` tipi
+döndürdüğünü ve `Result`'ın `Ok` ve `Err` varyantları olan bir enum olduğunu
+hatırlayın. Burada bir `match` deyimi kullanıyoruz, tıpkı `cmp` metodunun
+`Ordering` sonucunda yaptığımız gibi.
 
-If `parse` is able to successfully turn the string into a number, it will
-return an `Ok` value that contains the resultant number. That `Ok` value will
-match the first arm’s pattern, and the `match` expression will just return the
-`num` value that `parse` produced and put inside the `Ok` value. That number
-will end up right where we want it in the new `guess` variable we’re creating.
+Eğer `parse`, bir string'i bir sayıya başarılı bir şekilde döndürebilirse, çıkan
+sayıyı içeren `Ok` değerini dönecek. Bu `Ok` değeri ilk kolun deseniyle
+eşleşecek ve `match` deyimi sadece, `parse`'ın üretip `Ok` içine koyduğu `sayı`
+değerini döndürecek. Bu sayı, oluşturduğumuz `guess` değişkeni içinde yerini
+alacak, tam da istediğimiz yerde!
 
-If `parse` is *not* able to turn the string into a number, it will return an
-`Err` value that contains more information about the error. The `Err` value
-does not match the `Ok(num)` pattern in the first `match` arm, but it does
-match the `Err(_)` pattern in the second arm. The underscore, `_`, is a
-catchall value; in this example, we’re saying we want to match all `Err`
-values, no matter what information they have inside them. So the program will
-execute the second arm’s code, `continue`, which tells the program to go to the
-next iteration of the `loop` and ask for another guess. So, effectively, the
-program ignores all errors that `parse` might encounter!
+Eğer `parse`, string'i bir sayıya *döndüremezse*, hata hakkında daha fazla
+bilgi içeren `Err` değerini döndürecek. `Err` değeri ilk `match` kolundaki
+`Ok(sayı)` deseni ile eşleşmeyecek ama ikinci koldaki `Err(_)` deseni ile
+eşleşecek. Altçizgi (`_`) bir hepsini yakala değeri; bu örnekte, içinde hangi
+bilgileri taşıyor olurlarsa olsunlar, tüm `Err` değerlerini eşleştirmek
+istediğimizi söylüyoruz. Yani program ikinci kolun kodunu yani `continue` kodunu
+çalıştıracak, bu kod programa, döngünün bir sonraki yinelemesine geçmesini ve
+bir diğer tahmini istemesini söyler. Yani program, etkili bir şekilde `parse`'ın
+karşılaşabileceği tüm hataları boşverir!
 
-Now everything in the program should work as expected. Let’s try it:
+Şimdi programdaki her şey beklendiği gibi çalışmalıdır. Hadi deneyelim:
 
 <!-- manual-regeneration
 cd listings/ch02-guessing-game-tutorial/listing-02-05/
@@ -867,33 +881,33 @@ foo
 
 ```console
 $ cargo run
-   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+   Compiling tahmin_oyunu v0.1.0 (file:///projects/tahmin_oyunu)
     Finished dev [unoptimized + debuginfo] target(s) in 4.45s
-     Running `target/debug/guessing_game`
-Guess the number!
-The secret number is: 61
-Please input your guess.
+     Running `target/debug/tahmin_oyunu`
+Sayıyı tahmin et!
+Gizli sayı: 61
+Lütfen tahmininizi girin.
 10
-You guessed: 10
-Too small!
-Please input your guess.
+Şunu tahmin ettiniz: 10
+Çok küçük!
+Lütfen tahmininizi girin.
 99
-You guessed: 99
-Too big!
-Please input your guess.
+Şunu tahmin ettiniz: 99
+Çok büyük!
+Lütfen tahmininizi girin.
 foo
-Please input your guess.
+Lütfen tahmininizi girin.
 61
-You guessed: 61
-You win!
+Şunu tahmin ettiniz: 61
+Kazandın!
 ```
 
-Awesome! With one tiny final tweak, we will finish the guessing game. Recall
-that the program is still printing the secret number. That worked well for
-testing, but it ruins the game. Let’s delete the `println!` that outputs the
-secret number. Listing 2-6 shows the final code.
+Şahane! Son bir minik çimdik ile, tahmin oyununu bitireceğiz. Programın hala
+gizli sayıyı yazdırdığını hatırlayın. Bu, test etme için iyidir ama oyunu
+mahvetmekte. Hadi gizli sayıyı çıktı veren `println!`'i silelim. Listing 2-6 son
+kodu göstermektedir.
 
-<Listing number="2-6" file-name="src/main.rs" caption="Complete guessing game code">
+<Listing number="2-6" file-name="src/main.rs" caption="Tahmin oyunu kodunu tamamla">
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-06/src/main.rs}}
@@ -901,17 +915,18 @@ secret number. Listing 2-6 shows the final code.
 
 </Listing>
 
-At this point, you’ve successfully built the guessing game. Congratulations!
+Bu noktada, tahmin oyununu başarılı bir şekilde inşa ettiniz. Tebrikler!
 
-## Summary
+## Özet
 
-This project was a hands-on way to introduce you to many new Rust concepts:
-`let`, `match`, functions, the use of external crates, and more. In the next
-few chapters, you’ll learn about these concepts in more detail. Chapter 3
-covers concepts that most programming languages have, such as variables, data
-types, and functions, and shows how to use them in Rust. Chapter 4 explores
-ownership, a feature that makes Rust different from other languages. Chapter 5
-discusses structs and method syntax, and Chapter 6 explains how enums work.
+Bu proje, size birçok yeni Rust kavramını anlatmak için uygulamalı bir yoldu:
+`let`, `match`, fonksiyonlar, harici crate'lerin kullanımı ve daha fazlası.
+Sonraki birkaç bölümde, bu kavramlar ile ilgili daha ayrıntılı bir şekilde
+öğreneceksiniz. 3. bölüm, değişkenler, veri tipleri ve fonksiyonlar gibi birçok
+programlama dilinin sahip olduğu kavramları kapsar ve bunları Rust'ta nasıl
+kullanacağınızı gösterir. 4. bölüm sahipliği keşfeder, bu özellik Rust'ı diğer
+dillerden farklı yapar. 5. bölüm struct metod sözdizimini tartışır, ve 6. bölüm
+enum'ların nasıl çalıştığını açıklar.
 
 [prelude]: ../std/prelude/index.html
 [variables-and-mutability]: ch03-01-variables-and-mutability.html#variables-and-mutability

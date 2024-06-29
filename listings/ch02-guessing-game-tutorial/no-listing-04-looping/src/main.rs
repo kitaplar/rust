@@ -3,37 +3,37 @@ use std::cmp::Ordering;
 use std::io;
 
 fn main() {
-    println!("Guess the number!");
+    println!("Sayıyı tahmin et!");
 
-    let secret_number = rand::thread_rng().gen_range(1..=100);
+    let gizli_sayı = rand::thread_rng().gen_range(1..=100);
 
     // ANCHOR: here
     // --snip--
 
-    println!("The secret number is: {secret_number}");
+    println!("Gizli sayı: {gizli_sayı}");
 
     loop {
-        println!("Please input your guess.");
+        println!("Lütfen tahmininizi girin.");
 
         // --snip--
 
         // ANCHOR_END: here
 
-        let mut guess = String::new();
+        let mut tahmin = String::new();
 
         io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line");
+            .read_line(&mut tahmin)
+            .expect("Satırı okumak başarısız");
 
-        let guess: u32 = guess.trim().parse().expect("Please type a number!");
+        let tahmin: u32 = tahmin.trim().parse().expect("Lütfen bir sayı girin!");
 
-        println!("You guessed: {guess}");
+        println!("Şunu tahmin ettiniz: {tahmin}");
 
         // ANCHOR: here
-        match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too small!"),
-            Ordering::Greater => println!("Too big!"),
-            Ordering::Equal => println!("You win!"),
+        match tahmin.cmp(&gizli_sayı) {
+            Ordering::Less => println!("Çok küçük!"),
+            Ordering::Greater => println!("Çok büyük!"),
+            Ordering::Equal => println!("Kazandın!"),
         }
     }
 }

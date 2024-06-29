@@ -3,31 +3,31 @@ use std::cmp::Ordering;
 use std::io;
 
 fn main() {
-    println!("Guess the number!");
+    println!("Sayıyı tahmin et!");
 
-    let secret_number = rand::thread_rng().gen_range(1..=100);
+    let gizli_sayı = rand::thread_rng().gen_range(1..=100);
 
     loop {
-        println!("Please input your guess.");
+        println!("Lütfen tahmininizi girin.");
 
-        let mut guess = String::new();
+        let mut tahmin = String::new();
 
         io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line");
+            .read_line(&mut tahmin)
+            .expect("Satırı okumak başarısız");
 
-        let guess: u32 = match guess.trim().parse() {
-            Ok(num) => num,
+        let tahmin: u32 = match tahmin.trim().parse() {
+            Ok(sayı) => sayı,
             Err(_) => continue,
         };
 
-        println!("You guessed: {guess}");
+        println!("Şunu tahmin ettiniz: {tahmin}");
 
-        match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too small!"),
-            Ordering::Greater => println!("Too big!"),
+        match tahmin.cmp(&gizli_sayı) {
+            Ordering::Less => println!("Çok küçük!"),
+            Ordering::Greater => println!("Çok büyük!"),
             Ordering::Equal => {
-                println!("You win!");
+                println!("Kazandın!");
                 break;
             }
         }
