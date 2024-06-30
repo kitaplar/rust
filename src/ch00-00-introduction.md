@@ -192,4 +192,4 @@ Her durumda derlenmeyen herhangi bir kodun doğru sürümüne sizi yönlendirece
 
 Bu kitabın oluşturulduğu kaynak dosyaları [GitHub][book]'da bulunabilir.
 
-[book]: https://github.com/rust-lang/book/tree/main/src
+[book]: https://github.com/kitaplar/rust/tree/main/src
