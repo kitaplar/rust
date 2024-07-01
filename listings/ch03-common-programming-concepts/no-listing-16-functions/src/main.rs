@@ -1,9 +1,9 @@
 fn main() {
-    println!("Hello, world!");
+    println!("Merhaba, dünya!");
 
-    another_function();
+    bir_diğer_fonksiyon();
 }
 
-fn another_function() {
-    println!("Another function.");
+fn bir_diğer_fonksiyon() {
+    println!("Bir diğer fonksiyon.");
 }

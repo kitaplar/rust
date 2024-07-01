@@ -1,16 +1,16 @@
 $ cargo build
-   Compiling no_type_annotations v0.1.0 (file:///projects/no_type_annotations)
+   Compiling tip_bildirimi_yok v0.1.0 (file:///projects/tip_bildirimi_yok)
 error[E0284]: type annotations needed
  --> src/main.rs:2:9
   |
-2 |     let guess = "42".parse().expect("Not a number!");
-  |         ^^^^^        ----- type must be known at this point
+2 |     let tahmin = "42".parse().expect("Bir sayı değil!");
+  |         ^^^^^^        ----- type must be known at this point
   |
   = note: cannot satisfy `<_ as FromStr>::Err == _`
-help: consider giving `guess` an explicit type
+help: consider giving `tahmin` an explicit type
   |
-2 |     let guess: /* Type */ = "42".parse().expect("Not a number!");
-  |              ++++++++++++
+2 |     let tahmin: /* Type */ = "42".parse().expect("Bir sayı değil!");
+  |               ++++++++++++
 
 For more information about this error, try `rustc --explain E0284`.
-error: could not compile `no_type_annotations` (bin "no_type_annotations") due to 1 previous error
+error: could not compile `tip_bildirimi_yok` (bin "tip_bildirimi_yok") due to 1 previous error

@@ -1,9 +1,9 @@
 fn main() {
-    let number = 3;
+    let sayı = 3;
 
-    if number < 5 {
-        println!("condition was true");
+    if sayı < 5 {
+        println!("koşul doğru");
     } else {
-        println!("condition was false");
+        println!("koşul yanlış");
     }
 }

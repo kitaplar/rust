@@ -1,6 +1,6 @@
 fn main() {
-    for number in (1..4).rev() {
-        println!("{number}!");
+    for sayı in (1..4).rev() {
+        println!("{sayı}!");
     }
-    println!("LIFTOFF!!!");
+    println!("HAVALAN!!!");
 }

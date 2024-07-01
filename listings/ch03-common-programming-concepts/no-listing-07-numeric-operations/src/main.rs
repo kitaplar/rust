@@ -1,17 +1,17 @@
 fn main() {
-    // addition
-    let sum = 5 + 10;
+    // ekleme
+    let toplam = 5 + 10;
 
-    // subtraction
-    let difference = 95.5 - 4.3;
+    // çıkarma
+    let fark = 95.5 - 4.3;
 
-    // multiplication
-    let product = 4 * 30;
+    // çarpma
+    let çarpım = 4 * 30;
 
-    // division
-    let quotient = 56.7 / 32.2;
-    let truncated = -5 / 3; // Results in -1
+    // bölme
+    let sonuç = 56.7 / 32.2;
+    let kesilmiş = -5 / 3; // -1 ile sonuçlanır
 
-    // remainder
-    let remainder = 43 % 5;
+    // kalan
+    let kalan = 43 % 5;
 }

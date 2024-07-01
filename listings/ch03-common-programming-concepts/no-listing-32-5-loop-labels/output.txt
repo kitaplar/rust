@@ -1,13 +1,13 @@
 $ cargo run
-   Compiling loops v0.1.0 (file:///projects/loops)
+   Compiling döngüler v0.1.0 (file:///projects/döngüler)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.58s
-     Running `target/debug/loops`
-count = 0
-remaining = 10
-remaining = 9
-count = 1
-remaining = 10
-remaining = 9
-count = 2
-remaining = 10
-End count = 2
+     Running `target/debug/döngüler`
+sayı = 0
+kalan = 10
+kalan = 9
+sayı = 1
+kalan = 10
+kalan = 9
+sayı = 2
+kalan = 10
+Son sayı = 2

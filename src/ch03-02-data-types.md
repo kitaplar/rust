@@ -1,349 +1,348 @@
-## Data Types
+## Veri Tipleri
 
-Every value in Rust is of a certain *data type*, which tells Rust what kind of
-data is being specified so it knows how to work with that data. We’ll look at
-two data type subsets: scalar and compound.
+Rust'taki her değer belirli bir `veri tipi`ndedir, bu Rust'a hangi tür verinin
+belirtildiğini söyler, böylece Rust, bu veri ile nasıl çalışması gerektiğini
+bilir. İki veri tipi alt kümesine bakacağız: skaler ve bileşik.
 
-Keep in mind that Rust is a *statically typed* language, which means that it
-must know the types of all variables at compile time. The compiler can usually
-infer what type we want to use based on the value and how we use it. In cases
-when many types are possible, such as when we converted a `String` to a numeric
-type using `parse` in the [“Comparing the Guess to the Secret
-Number”][comparing-the-guess-to-the-secret-number]<!-- ignore --> section in
-Chapter 2, we must add a type annotation, like this:
+Rust'ın *statik tiplenen* bir dil olduğunu unutmayın, bu demek oluyor ki Rust,
+tüm değişkenlerin değerini derleme zamanında bilmelidir. Derleyici genellikle
+değer ve bu değeri nasıl kullandığımız üzerinden hangi tipi kullanmak
+istediğimizi çıkarabilir. Birçok tipin mümkün olduğu durumlarda, mesela 2.
+bölümdeki [“Tahmin ile Gizli Sayıyı
+Karşılaştırmak”][comparing-the-guess-to-the-secret-number] bölümünde `parse`
+kullanarak bir `String`'i bir sayısala dönüştürdüğümüzde, şu şekilde bir tip
+bildirimi eklemeliyiz:
 
 ```rust
-let guess: u32 = "42".parse().expect("Not a number!");
+let tahmin: u32 = "42".parse().expect("Bir sayı değil!");
 ```
 
-If we don’t add the `: u32` type annotation shown in the preceding code, Rust
-will display the following error, which means the compiler needs more
-information from us to know which type we want to use:
+Eğer bu kodda `: u32` tip bildirimini eklemezsek Rust, aşağıdaki hatayı
+görüntüleyecektir, ki bu, derleyicinin hangi tipi kullanmak istediğimiz hakkında
+daha fazla bilgiye ihtiyaç duyduğu anlamına gelir:
 
 ```console
 {{#include ../listings/ch03-common-programming-concepts/output-only-01-no-type-annotations/output.txt}}
 ```
 
-You’ll see different type annotations for other data types.
+Diğer veri tipleri için farklı tip bildirimleri göreceksiniz.
 
-### Scalar Types
+### Skaler Tipler
 
-A *scalar* type represents a single value. Rust has four primary scalar types:
-integers, floating-point numbers, Booleans, and characters. You may recognize
-these from other programming languages. Let’s jump into how they work in Rust.
+Bir *skaler* tip, tek bir değeri ifade eder. Rust dört birincil skaler tipe
+sahiptir: tamsayılar, kayan noktalı sayılar, Boolean'lar ve karakterler. Bunları
+diğer dillerden tanımış olabilirsiniz. Hadi bunların Rust'ta nasıl çalıştığına
+bakalım.
 
-#### Integer Types
+#### Tamsayı Tipleri
 
-An *integer* is a number without a fractional component. We used one integer
-type in Chapter 2, the `u32` type. This type declaration indicates that the
-value it’s associated with should be an unsigned integer (signed integer types
-start with `i` instead of `u`) that takes up 32 bits of space. Table 3-1 shows
-the built-in integer types in Rust. We can use any of these variants to declare
-the type of an integer value.
+Bir *tamsayı*, kesirli bir bileşeni olmayan bir sayıdır. 2. bölümde bir tamsayı
+tipi kullanmıştık: `u32` tipi. Bu tip belirtimi, bunun ilişkilendirildiği
+değerin işaretsiz bir tamsayı (işaretli tamsayı tipleri, `u` yerine `i` ile
+başlar) olması gerektiğini ve 32 bit'e kadar alan kaplayacağını belirtir. Tablo
+3-1, Rust'taki yerleşik tamsayı tiplerini göstermektedir. Bu varyantların
+herhangi birini bir tamsayı değerinin tipini bildirmek için kullanabiliriz.
 
-<span class="caption">Table 3-1: Integer Types in Rust</span>
+<span class="caption">Tablo 3-1: Rust'taki Tamsayı Tipleri</span>
 
-| Length  | Signed  | Unsigned |
-|---------|---------|----------|
-| 8-bit   | `i8`    | `u8`     |
-| 16-bit  | `i16`   | `u16`    |
-| 32-bit  | `i32`   | `u32`    |
-| 64-bit  | `i64`   | `u64`    |
-| 128-bit | `i128`  | `u128`   |
-| arch    | `isize` | `usize`  |
+| Uzunluk | İşaretli | İşaretsiz |
+|---------|----------|-----------|
+| 8 bit   | `i8`     | `u8`      |
+| 16 bit  | `i16`    | `u16`     |
+| 32 bit  | `i32`    | `u32`     |
+| 64 bit  | `i64`    | `u64`     |
+| 128 bit | `i128`   | `u128`    |
+| mimari  | `isize`  | `usize`   |
 
-Each variant can be either signed or unsigned and has an explicit size.
-*Signed* and *unsigned* refer to whether it’s possible for the number to be
-negative—in other words, whether the number needs to have a sign with it
-(signed) or whether it will only ever be positive and can therefore be
-represented without a sign (unsigned). It’s like writing numbers on paper: when
-the sign matters, a number is shown with a plus sign or a minus sign; however,
-when it’s safe to assume the number is positive, it’s shown with no sign.
-Signed numbers are stored using [two’s complement][twos-complement]<!-- ignore
---> representation.
+Her varyant ya işaretli ya da işaretsizdir ve bir uzunluğa sahiptir. *İşaretli*
+ve `işaretsiz`, sayının negatif olmasının mümkün olup olmadığına işaret eder,
+bir diğer deyişle, sayının kendisiyle birlikte bir işarete ihtiyacı olup
+olmadığını (işaretli) ya da sadece pozitif olabileceği için sayının bir işaret
+olmadan ifade edilip edilemeyeceğini (işaretsiz) belirtir. Bu tıpkı sayıları
+kağıda yazmak gibidir: işaret önemli olduğunda, sayı bir artı ya da eksi işareti
+ile gösterilir; ama sayının pozitif olduğunu varsaymak güvenli olduğunda,
+sayı işaretsiz gösterilir. İşaretli sayılar, [ikinin tümleyeni][twos-complement]
+gösterimi kullanılarak saklanır.
 
-Each signed variant can store numbers from -(2<sup>n - 1</sup>) to 2<sup>n -
-1</sup> - 1 inclusive, where *n* is the number of bits that variant uses. So an
-`i8` can store numbers from -(2<sup>7</sup>) to 2<sup>7</sup> - 1, which equals
--128 to 127. Unsigned variants can store numbers from 0 to 2<sup>n</sup> - 1,
-so a `u8` can store numbers from 0 to 2<sup>8</sup> - 1, which equals 0 to 255.
+Her işaretli varyant, -(2<sup>n - 1</sup>)'den 2<sup>n - 1</sup> - 1'e kadar
+(dahil) sayı tutabilir, buradaki *n*, varyant kullandığı bit sayısıdır. Yani bir
+`i8`, -(2<sup>7</sup>)'den 2<sup>7</sup> - 1'e kadar sayı tutabilir, ki bu
+-128'den 127'ye kadar demektir. İşaretsiz varyantlar, 0'dan 2<sup>n</sup> -1'e
+kadar sayı tutabilirler, yani bir `u8`, 0'dan 2<sup>8</sup> - 1'e kadar sayı
+tutabilir, ki bu da 0'dan 255'e kadar demektir.
 
-Additionally, the `isize` and `usize` types depend on the architecture of the
-computer your program is running on, which is denoted in the table as “arch”:
-64 bits if you’re on a 64-bit architecture and 32 bits if you’re on a 32-bit
-architecture.
+Ek olarak, `isize` ve `usize` tipleri programınızın koştuğu bilgisayarın
+mimarisine bağımlıdır, ki bu, tabloda “mimari” olarak belirtilmiştir: eğer
+64 bit mimari üzerindeyseniz, 64 bit ve eğer 32 bit mimari üzerindeyseniz, 32
+bit.
 
-You can write integer literals in any of the forms shown in Table 3-2. Note
-that number literals that can be multiple numeric types allow a type suffix,
-such as `57u8`, to designate the type. Number literals can also use `_` as a
-visual separator to make the number easier to read, such as `1_000`, which will
-have the same value as if you had specified `1000`.
+Tamsayı literallerini Tablo 3-2'de gösterilen herhangi bir biçimde
+yazabilirsiniz. Birden fazla sayısal tip olabilen sayı literallerinin, tipi
+tayin etmek için bir tip sonekine izin verdiğine dikkat edin, mesela `57u8`
+gibi. Sayı literalleri ayrıca `_`'yi görsel bir ayraç olarak da kullanabilir,
+böylece sayı daha kolay okunur hale gelir, mesela `1_000` gibi, ki bu sayı,
+`1000` ile aynı değere sahip olacaktır.
 
-<span class="caption">Table 3-2: Integer Literals in Rust</span>
+<span class="caption">Tablo 3-2: Rust'ta Tamsayı Literalleri</span>
 
-| Number literals  | Example       |
-|------------------|---------------|
-| Decimal          | `98_222`      |
-| Hex              | `0xff`        |
-| Octal            | `0o77`        |
-| Binary           | `0b1111_0000` |
-| Byte (`u8` only) | `b'A'`        |
+| Sayı literalleri   | Örnek         |
+|--------------------|---------------|
+| Ondalık            | `98_222`      |
+| Onaltılık          | `0xff`        |
+| Sekizlik           | `0o77`        |
+| İkilik             | `0b1111_0000` |
+| Bayt (sadece `u8`) | `b'A'`        |
 
-So how do you know which type of integer to use? If you’re unsure, Rust’s
-defaults are generally good places to start: integer types default to `i32`.
-The primary situation in which you’d use `isize` or `usize` is when indexing
-some sort of collection.
+Peki hangi tamsayıyı kullanacağınızı nasıl bileceksiniz? Eğer emin değilseniz,
+Rust'ın varsayılanları genelde başlamak için iyidir: tamsayı tipleri varsayılan
+olarak `i32`'dir. `isize` ya da `usize`'ı kullanacağınız birincil durum, bir
+çeşit koleksiyonu indekslemektir.
 
-> ##### Integer Overflow
+> ##### Tamsayı Taşması
 >
-> Let’s say you have a variable of type `u8` that can hold values between 0 and
-> 255. If you try to change the variable to a value outside that range, such as
-> 256, *integer overflow* will occur, which can result in one of two behaviors.
-> When you’re compiling in debug mode, Rust includes checks for integer overflow
-> that cause your program to *panic* at runtime if this behavior occurs. Rust
-> uses the term *panicking* when a program exits with an error; we’ll discuss
-> panics in more depth in the [“Unrecoverable Errors with
-> `panic!`”][unrecoverable-errors-with-panic]<!-- ignore --> section in Chapter
-> 9.
+> Diyelim ki 0 ile 255 arasındaki değerleri tutabilen `u8` tipinde bir
+> değişkeniniz var. Eğer değişkeni, 256 gibi bu aralık dışında bir değere
+> değiştirmeyi denerseniz, *tamsayı taşması* meydana gelecektir, ki bu, iki
+> davranıştan biriyle sonuçlanır. Hata ayıklama modunda derlediğinizde Rust,
+> tamsayı taşması için kontrolleri dahil edecek ve bu durumda program, çalışma
+> zamanında *panikleyecektir*. Rust, *panikleme* terimini, bir program bir hata
+> ile çıkış yaptığı zaman kullanır; Panikleri 9. bölümün [“`panic!` ile
+> Düzeltilemez Hatalar”][unrecoverable-errors-with-panic] bölümünde ayrıntılı
+> bir şekilde işleyeceğiz.
 >
-> When you’re compiling in release mode with the `--release` flag, Rust does
-> *not* include checks for integer overflow that cause panics. Instead, if
-> overflow occurs, Rust performs *two’s complement wrapping*. In short, values
-> greater than the maximum value the type can hold “wrap around” to the minimum
-> of the values the type can hold. In the case of a `u8`, the value 256 becomes
-> 0, the value 257 becomes 1, and so on. The program won’t panic, but the
-> variable will have a value that probably isn’t what you were expecting it to
-> have. Relying on integer overflow’s wrapping behavior is considered an error.
+> `--release` bayrağı ile yayın modunda derlediğinizde, Rust, tamsayı taşması
+> için paniğe neden olabilecek herhangi bir kontrol *eklemez*. Bunun yerine,
+> eğer taşma gerçekleşirse, Rust, *ikinin tümleyeni sarma*yı uygular. Kısaca,
+> tipin tutabileceği maksimum değerden büyük değerler, tipin tutabileceği
+> minimum değerin “etrafını sarar”. `u8` durumunda, 256 değeri, 0 olur; 257
+> değeri 1 olur; vb. Program paniklemez fakat değişken muhtemelen sizin olmasını
+> beklediğiniz değerde olmayacak. Tamsayı taşmasının sarma davranışına güvenmek,
+> bir hata olarak düşünülür.
 >
-> To explicitly handle the possibility of overflow, you can use these families
-> of methods provided by the standard library for primitive numeric types:
+> Taşma ihtimalini harici olarak ele almak için, ilkel sayısal tipler için
+> standart kütüphanedeki şu metod ailelerini kullanabilirsiniz:
 >
-> * Wrap in all modes with the `wrapping_*` methods, such as `wrapping_add`.
-> * Return the `None` value if there is overflow with the `checked_*` methods.
-> * Return the value and a boolean indicating whether there was overflow with
->   the `overflowing_*` methods.
-> * Saturate at the value’s minimum or maximum values with the `saturating_*`
->   methods.
+> * Tüm modları `wrapping_*` metodları ile sarın, mesela `wrapping_add`.
+> * Eğer taşma varsa `checked_*` metodu ile `None` değeri döndürün.
+> * `overflowing_*` metodları ile değeri ve bir taşma olup olmadığını belirten
+>   bir boolean döndürün.
+> * `saturating_*` metodları ile değerin minimum ya da maksimum değerinde
+>   doyurmak
 
-#### Floating-Point Types
+#### Kayan Noktalı Tipler
 
-Rust also has two primitive types for *floating-point numbers*, which are
-numbers with decimal points. Rust’s floating-point types are `f32` and `f64`,
-which are 32 bits and 64 bits in size, respectively. The default type is `f64`
-because on modern CPUs, it’s roughly the same speed as `f32` but is capable of
-more precision. All floating-point types are signed.
+Rust ayrıca *kayan noktalı sayılar* (ondalık noktalı sayılar) için iki ilkel
+tipe sahiptir. Bu tipler `f32` ve `f64`'tür, ve sırasıyla 32 bit ve 64 bit
+büyüklüğe sahiptir. Varsayılan tip `f64`'tür çünkü bu tip, modern işlemcilerde
+`f32` ile neredeyse aynı hızdadır ancak daha kesindir. Tüm kayan noktalı tipler
+işaretlidir.
 
-Here’s an example that shows floating-point numbers in action:
+İşte kayan noktalı sayıları iş başında gösteren bir örnek:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-06-floating-point/src/main.rs}}
 ```
 
-Floating-point numbers are represented according to the IEEE-754 standard. The
-`f32` type is a single-precision float, and `f64` has double precision.
+Kayan noktalı sayılar, IEEE-754 standardına göre ifade edilirler. `f32` tipi,
+tek kesinlikte kayandır ve `f64`, çift kesinliğe sahiptir.
 
-#### Numeric Operations
+#### Sayısal İşlemler
 
-Rust supports the basic mathematical operations you’d expect for all the number
-types: addition, subtraction, multiplication, division, and remainder. Integer
-division truncates toward zero to the nearest integer. The following code shows
-how you’d use each numeric operation in a `let` statement:
+Rust, tüm sayı tipleri için bekleyeceğiniz tüm temel matematiksel işlemleri
+destekler: ekleme, çıkarma, çarpma, bölme ve kalan. Tamsayı bölme, en yakın
+tamsayıya doğru sıfırları keser. Aşağıdaki kod her sayısal işlemi nasıl
+kullanacağınızı `let` ifadelerinde göstermektedir:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-07-numeric-operations/src/main.rs}}
 ```
 
-Each expression in these statements uses a mathematical operator and evaluates
-to a single value, which is then bound to a variable. [Appendix
-B][appendix_b]<!-- ignore --> contains a list of all operators that Rust
-provides.
+Bu ifadelerdeki her deyim bir matematiksel işlem kullanır ve tek bir değere
+değerlenir, sonrasında bu değer, bir değişkene bağlanır. [B eki][appendix_b],
+Rust'ın sağladığı tüm işleçleri içermektedir.
 
-#### The Boolean Type
+#### Boolean Tipi
 
-As in most other programming languages, a Boolean type in Rust has two possible
-values: `true` and `false`. Booleans are one byte in size. The Boolean type in
-Rust is specified using `bool`. For example:
+Birçok diğer programlama dilinde olduğu gibi, Rust'ta bir Boolean tipi iki
+muhtemel değere sahiptir: `true` ve `false`. Boolean'lar, büyüklük olarak bir
+bayttır. Rust'taki Boolean tipi, `bool` ile belirtilir. Örneğin:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-08-boolean/src/main.rs}}
 ```
 
-The main way to use Boolean values is through conditionals, such as an `if`
-expression. We’ll cover how `if` expressions work in Rust in the [“Control
-Flow”][control-flow]<!-- ignore --> section.
+Boolean değerlerini kullanmanın ana yolu, koşulsalları kullanmaktır, mesela
+bir `if` deyimi. `if` deyimlerinin Rust ile nasıl çalıştığını [“Kontrol
+Akışı”][control-flow] bölümünde inceleyeceğiz.
 
-#### The Character Type
+#### Karakter Tipi
 
-Rust’s `char` type is the language’s most primitive alphabetic type. Here are
-some examples of declaring `char` values:
+Rust'ın `char` tipi, dilin en ilkel alfabetik tipidir. İşte `char` değerleri
+bildirmenin bazı örnekleri:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-09-char/src/main.rs}}
 ```
 
-Note that we specify `char` literals with single quotes, as opposed to string
-literals, which use double quotes. Rust’s `char` type is four bytes in size and
-represents a Unicode Scalar Value, which means it can represent a lot more than
-just ASCII. Accented letters; Chinese, Japanese, and Korean characters; emoji;
-and zero-width spaces are all valid `char` values in Rust. Unicode Scalar
-Values range from `U+0000` to `U+D7FF` and `U+E000` to `U+10FFFF` inclusive.
-However, a “character” isn’t really a concept in Unicode, so your human
-intuition for what a “character” is may not match up with what a `char` is in
-Rust. We’ll discuss this topic in detail in [“Storing UTF-8 Encoded Text with
-Strings”][strings]<!-- ignore --> in Chapter 8.
+`char` literalleri tek tırnak ile belirttiğimize dikkat edin, string
+literallerin aksine, ki onlar çift tırnak kullanır. Rust'ın `char` tipi büyüklük
+olarak dört bayttır ve bir Unicude Skaler Değerini ifade eder, ki bu, bu tipin
+ASCII'den çok daha fazlasını ifade edebileceğini gösterir. Rust'ta aksan
+harfleri; Çin, Japonca ve Korece karakterler; emoji; ve sıfır genişlikte
+boşluklar hep geçerli `char` değerleridir. Unicode Skaler Değerler, `U+0000`'dan
+`U+D7FF`'ye kadar ve `U+E000`'dan `U+10FFFF`'ye kadar (dahil) bir aralıktadır.
+Fakat Unicode'da bir “karakter” gerçekte bir kavram değildir, yani sizin
+sezgisel olarak bir “karakter” hakkındaki yorumunuz, Rust'taki `char` ile
+eşleşmeyebilir. Bu konuyu 8. bölümde [“String'ler ile UTF-8 ile Kodlanmış
+Metinleri Saklamak”][strings] bölümünde ayrıntılı bir şekilde tartışacağız.
 
-### Compound Types
+### Bileşik Tipler
 
-*Compound types* can group multiple values into one type. Rust has two
-primitive compound types: tuples and arrays.
+*Bileşik tipler* birden çok değeri bir tipe gruplayabilir. Rust iki ilkel
+bileşik tipe sahiptir: demetler ve diziler.
 
-#### The Tuple Type
+#### Demet Tipi
 
-A *tuple* is a general way of grouping together a number of values with a
-variety of types into one compound type. Tuples have a fixed length: once
-declared, they cannot grow or shrink in size.
+Bir *demet*, çeşitli tipteki değerleri bir bileşik tipe gruplamak için genel bir
+yoldur. Demetler sabit bir büyüklüğe sahiptir: bir kez bildirildiler mi,
+büyüyemez ya da küçülemezler.
 
-We create a tuple by writing a comma-separated list of values inside
-parentheses. Each position in the tuple has a type, and the types of the
-different values in the tuple don’t have to be the same. We’ve added optional
-type annotations in this example:
+Bir demeti, değerleri parantezler içine, virgüllerle ayrılmış şekilde yazarak
+oluşturabiliriz. Demetteki her bir pozisyonun bir tipi vardır ve demetteki
+farklı değerlerin tiplerinin birbirleri ile aynı olması gerekmez. Bu örnekte,
+isteğe bağlı tip bildirimlerini ekledik:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-10-tuples/src/main.rs}}
 ```
 
-The variable `tup` binds to the entire tuple because a tuple is considered a
-single compound element. To get the individual values out of a tuple, we can
-use pattern matching to destructure a tuple value, like this:
+`demet` değişkeni, tüm demete bağlanır çünkü demet, tek bir bileşik öğe olarak
+düşünülür. Bir demetteki bireysel değerleri almak için, desen eşlemeyi
+kullanabiliriz, böylece bir demet değerini yıkarız:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-11-destructuring-tuples/src/main.rs}}
 ```
 
-This program first creates a tuple and binds it to the variable `tup`. It then
-uses a pattern with `let` to take `tup` and turn it into three separate
-variables, `x`, `y`, and `z`. This is called *destructuring* because it breaks
-the single tuple into three parts. Finally, the program prints the value of
-`y`, which is `6.4`.
+Bu program önce bir demet oluşturur ve bu demeti `demet` isimli değişkene
+bağlar. Daha sonra `demet`i üç farklı değişkene (`x`, `y` ve `z`) ayırmak için
+`let` ile bir desen kullanır. Buna *yıkma* denir çünkü bu, bir demeti üç
+parçaya ayırır. Son olarak, program `y`'nin değerini yazdırır, ki burada `6.4`.
 
-We can also access a tuple element directly by using a period (`.`) followed by
-the index of the value we want to access. For example:
+Bir demet öğesine ayrıca bir nokta (`.`) ve sonrasında erişmek istediğimiz
+değerin indeksini kullanarak da erişebiliriz. Örneğin:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-12-tuple-indexing/src/main.rs}}
 ```
 
-This program creates the tuple `x` and then accesses each element of the tuple
-using their respective indices. As with most programming languages, the first
-index in a tuple is 0.
+Bu program `a` demetini oluşturmakta, sonra demetin her öğesine, bu öğelerin
+indekslerini kullanarak erişmektedir. Birçok programlama dilindeki gibi, bir
+demetteki ilk indeks, 0'dır.
 
-The tuple without any values has a special name, *unit*. This value and its
-corresponding type are both written `()` and represent an empty value or an
-empty return type. Expressions implicitly return the unit value if they don’t
-return any other value.
+Değeri olmayan demet özel bir isme sahiptir: *birim*. Bu değer ve bu değerin
+karşılık gelen tipi `()` olarak yazılır ve boş bir değeri ifade eder, ya da boş
+bir döndürme tipini. Deyimler, eğer başka bir değer döndürmezlerse, dahili
+olarak birim değerini döndürürler.
 
-#### The Array Type
+#### Dizi Tipi
 
-Another way to have a collection of multiple values is with an *array*. Unlike
-a tuple, every element of an array must have the same type. Unlike arrays in
-some other languages, arrays in Rust have a fixed length.
+Birden çok değerin bir koleksiyonuna sahip olmak için bir diğer yol, bir *dizi*
+kullanmaktır. Demetin aksine, bir dizinin her öğesi aynı tipte olmalıdır. Bazı
+diğer dillerdeki dizilerin aksine, Rust'taki diziler sabit uzunluğa sahiptir.
 
-We write the values in an array as a comma-separated list inside square
-brackets:
+Bir dizideki değerleri, köşeli parantezler içine virgülle ayırarak yazarız:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-13-arrays/src/main.rs}}
 ```
 
-Arrays are useful when you want your data allocated on the stack rather than
-the heap (we will discuss the stack and the heap more in [Chapter
-4][stack-and-heap]<!-- ignore -->) or when you want to ensure you always have a
-fixed number of elements. An array isn’t as flexible as the vector type,
-though. A *vector* is a similar collection type provided by the standard
-library that *is* allowed to grow or shrink in size. If you’re unsure whether
-to use an array or a vector, chances are you should use a vector. [Chapter
-8][vectors]<!-- ignore --> discusses vectors in more detail.
+Diziler, verinizin heap'te değil de stack'te tahsis edilmesini (stack ve heap'i
+[4. bölümde][stack-and-heap] tartışacağız) ya da her zaman sabit sayıda öğenizin
+olduğuna emin olmak istiyorsanız, kullanışlıdır. Ancak bir dizi, vektör tipi
+kadar esnek değildir. Bir *vektör*, standart kütüphane tarafından sağlanan
+benzer bir koleksiyon tipidir ancak büyüyüp küçülmesine *izin verilir*. Bir dizi
+mi yoksa bir vektör mü kullanacağınıza emin değilseniz, büyük ihtimalle bir
+vektör kullanmalısınız. [8. bölüm][vectors], vektörleri ayrıntılı bir şekilde
+tartışmaktadır.
 
-However, arrays are more useful when you know the number of elements will not
-need to change. For example, if you were using the names of the month in a
-program, you would probably use an array rather than a vector because you know
-it will always contain 12 elements:
-
-```rust
-let months = ["January", "February", "March", "April", "May", "June", "July",
-              "August", "September", "October", "November", "December"];
-```
-
-You write an array’s type using square brackets with the type of each element,
-a semicolon, and then the number of elements in the array, like so:
+Fakat, öğe sayısının değişmeye ihtiyacı olmadığını bildiğinizde, diziler daha
+kullanışlıdır. Örneğin, eğer bir programda ayların isimlerini kullanacak
+olsaydınız, muhtemelen bir vektör yerine bir dizi kullanırdınız çünkü her zaman
+12 öğe olacağını bilirsiniz:
 
 ```rust
-let a: [i32; 5] = [1, 2, 3, 4, 5];
+let aylar = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz",
+             "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 ```
 
-Here, `i32` is the type of each element. After the semicolon, the number `5`
-indicates the array contains five elements.
-
-You can also initialize an array to contain the same value for each element by
-specifying the initial value, followed by a semicolon, and then the length of
-the array in square brackets, as shown here:
+Bir dizinin tipini, köşeli parantezler içinde öğelerin tipini, bir noktalı
+virgül ve sonra öğelerin sayısını yazarak belirtirsiniz:
 
 ```rust
-let a = [3; 5];
+let d: [i32; 5] = [1, 2, 3, 4, 5];
 ```
 
-The array named `a` will contain `5` elements that will all be set to the value
-`3` initially. This is the same as writing `let a = [3, 3, 3, 3, 3];` but in a
-more concise way.
+Burada `i32`, her öğenin tipidir. Noktalı virgülden sonraki `5`, dizinin 5 öğe
+içerdiğini belirtir.
 
-##### Accessing Array Elements
+Ayrıca bir dizinin her öğe için aynı değeri ilklendirmesini de
+sağlayabilirsiniz. Bunun için köşeli parantezler içine ilk değeri, sonra noktalı
+virgülü, sonrasında da dizinin uzunluğunu yazarsınız:
 
-An array is a single chunk of memory of a known, fixed size that can be
-allocated on the stack. You can access elements of an array using indexing,
-like this:
+```rust
+let d = [3; 5];
+```
 
-<span class="filename">Filename: src/main.rs</span>
+`d` isimli dizi, `5` öğe içerecek ve bu öğelerin hepsi `3`'e ayarlanmış
+olacaktır. Bu, `let d = [3, 3, 3, 3, 3];` yazmakla aynıdır ancak daha kısadır.
+
+##### Dizi Öğelerine Erişmek
+
+Bir dizi, stack'te ayrılabilecek bilinen sabit büyüklükte tek bir yığın
+hafızadır. Bir dizinin öğelerine indeksleme ile erişebilirsiniz:
+
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-14-array-indexing/src/main.rs}}
 ```
 
-In this example, the variable named `first` will get the value `1` because that
-is the value at index `[0]` in the array. The variable named `second` will get
-the value `2` from index `[1]` in the array.
+Bu örnekte `ilk`, `1` değerini alacaktır çünkü `[0]` indeksindeki değer budur.
+`ikinci` değişkeni ise `[1]` indeksindeki `2` değerini alacaktır.
 
-##### Invalid Array Element Access
+##### Geçersiz Dizi Öğesi Erişimi
 
-Let’s see what happens if you try to access an element of an array that is past
-the end of the array. Say you run this code, similar to the guessing game in
-Chapter 2, to get an array index from the user:
+Hadi dizinin sonunu aşan bir öğeye erişmeye çalıştığımızda ne olacağına bakalım.
+Diyelim ki, 2. bölümdeki tahmin oyununa benzer şekilde, kullanıcıdan bir dizi
+indeksi almak için şu kodu çalıştırdınız:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust,ignore,panics
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-15-invalid-array-access/src/main.rs}}
 ```
 
-This code compiles successfully. If you run this code using `cargo run` and
-enter `0`, `1`, `2`, `3`, or `4`, the program will print out the corresponding
-value at that index in the array. If you instead enter a number past the end of
-the array, such as `10`, you’ll see output like this:
+Bu kod başarılı bir şekilde derlenir. Eğer bu kodu `cargo run` kullanarak
+çalıştırdıysanız, ve `0`, `1`, `2`, `3` ve `4` girdiyseniz, program, bu
+indekslerdeki değerleri yazdıracaktır. Eğer bunun yerine dizinin sonunu geçen
+bir sayı (`10` gibi) girdiyseniz, şunun gibi bir çıktı göreceksiniz:
 
 <!-- manual-regeneration
 cd listings/ch03-common-programming-concepts/no-listing-15-invalid-array-access
@@ -357,28 +356,29 @@ index out of bounds: the len is 5 but the index is 10
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
 
-The program resulted in a *runtime* error at the point of using an invalid
-value in the indexing operation. The program exited with an error message and
-didn’t execute the final `println!` statement. When you attempt to access an
-element using indexing, Rust will check that the index you’ve specified is less
-than the array length. If the index is greater than or equal to the length,
-Rust will panic. This check has to happen at runtime, especially in this case,
-because the compiler can’t possibly know what value a user will enter when they
-run the code later.
+Program, indeksleme işleminde geçersiz bir değer kullandığınız noktada bir
+*çalışma zamanı* hatası ile sonuçlanmıştır. Program bir hata mesajı ile çıkış
+yaptı ve son `println!` ifadesini çalıştırmadı. İndeksleme kullanarak bir öğeye
+erişmeye çalıştığınızda, Rust, belirttiğiniz indeksin dizinin uzunluğundan küçük
+olduğunu kontrol eder. Eğer indeks, uzunluğa eşit ya da bundan büyükse, Rust
+panikleyecektir. Bu kontrol, çalışma zamanında olmalıdır, özellikle bu durumda,
+çünkü derleyici, kod sonradan çalıştırılınca kullanıcının hangi değeri
+gireceğini bilemez.
 
-This is an example of Rust’s memory safety principles in action. In many
-low-level languages, this kind of check is not done, and when you provide an
-incorrect index, invalid memory can be accessed. Rust protects you against this
-kind of error by immediately exiting instead of allowing the memory access and
-continuing. Chapter 9 discusses more of Rust’s error handling and how you can
-write readable, safe code that neither panics nor allows invalid memory access.
+Bu, Rust'ın hafıza güvenliği prensiplerinin iş başında olduğu bir örnektir.
+Birçok düşük seviye dilde, bu şekilde bir kontrol yapılmaz, ve doğru olmayan bir
+indeks verdiğinizde, geçersiz hafızaya erişilebilir. Rust, hafıza erişimine izin
+verip devam etmektense, anında çıkış yaparak sizi bu tür hatalardan korur. 9.
+bölüm Rust'ın hata ele alması hakkında daha fazlasını ve hem paniklemeyen hem de
+geçersiz hafıza erişimine izin vermeyen okunabilir, güvenli kodu nasıl
+yazabileceğinizi tartışacaktır.
 
 [comparing-the-guess-to-the-secret-number]:
-ch02-00-guessing-game-tutorial.html#comparing-the-guess-to-the-secret-number
+ch02-00-guessing-game-tutorial.html#tahmin-ile-gizli-sayıyı-karşılaştırmak
 [twos-complement]: https://en.wikipedia.org/wiki/Two%27s_complement
-[control-flow]: ch03-05-control-flow.html#control-flow
-[strings]: ch08-02-strings.html#storing-utf-8-encoded-text-with-strings
-[stack-and-heap]: ch04-01-what-is-ownership.html#the-stack-and-the-heap
+[control-flow]: ch03-05-control-flow.html#kontrol-akışı
+[strings]: ch08-02-strings.html#stringler-ile-utf-8-ile-kodlanmış-metinleri-saklamak
+[stack-and-heap]: ch04-01-what-is-ownership.html#stack-ve-heap
 [vectors]: ch08-01-vectors.html
 [unrecoverable-errors-with-panic]: ch09-01-unrecoverable-errors-with-panic.html
 [appendix_b]: appendix-02-operators.md

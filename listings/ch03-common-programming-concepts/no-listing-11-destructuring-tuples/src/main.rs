@@ -1,7 +1,7 @@
 fn main() {
-    let tup = (500, 6.4, 1);
+    let demet = (500, 6.4, 1);
 
-    let (x, y, z) = tup;
+    let (x, y, z) = demet;
 
-    println!("The value of y is: {y}");
+    println!("y'nin değeri: {y}");
 }

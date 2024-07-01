@@ -1,21 +1,21 @@
 fn main() {
-    let mut count = 0;
-    'counting_up: loop {
-        println!("count = {count}");
-        let mut remaining = 10;
+    let mut sayı = 0;
+    'yukarı_sayma: loop {
+        println!("sayı = {sayı}");
+        let mut kalan = 10;
 
         loop {
-            println!("remaining = {remaining}");
-            if remaining == 9 {
+            println!("kalan = {kalan}");
+            if kalan == 9 {
                 break;
             }
-            if count == 2 {
-                break 'counting_up;
+            if sayı == 2 {
+                break 'yukarı_sayma;
             }
-            remaining -= 1;
+            kalan -= 1;
         }
 
-        count += 1;
+        sayı += 1;
     }
-    println!("End count = {count}");
+    println!("Son sayı = {sayı}");
 }

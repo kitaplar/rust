@@ -1,9 +1,9 @@
 fn main() {
-    let x = plus_one(5);
+    let a = artı_bir(5);
 
-    println!("The value of x is: {x}");
+    println!("a'nın değeri: {a}");
 }
 
-fn plus_one(x: i32) -> i32 {
-    x + 1
+fn artı_bir(a: i32) -> i32 {
+    a + 1
 }

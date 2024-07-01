@@ -1,9 +1,9 @@
 $ cargo run
-   Compiling loops v0.1.0 (file:///projects/loops)
+   Compiling döngüler v0.1.0 (file:///projects/döngüler)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.32s
-     Running `target/debug/loops`
-the value is: 10
-the value is: 20
-the value is: 30
-the value is: 40
-the value is: 50
+     Running `target/debug/döngüler`
+değer: 10
+değer: 20
+değer: 30
+değer: 40
+değer: 50

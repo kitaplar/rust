@@ -1,13 +1,13 @@
 fn main() {
-    let number = 6;
+    let sayı = 6;
 
-    if number % 4 == 0 {
-        println!("number is divisible by 4");
-    } else if number % 3 == 0 {
-        println!("number is divisible by 3");
-    } else if number % 2 == 0 {
-        println!("number is divisible by 2");
+    if sayı % 4 == 0 {
+        println!("sayı, 4'e bölünebilir");
+    } else if sayı % 3 == 0 {
+        println!("sayı, 3'e bölünebilir");
+    } else if sayı % 2 == 0 {
+        println!("sayı, 2'ye bölünebilir");
     } else {
-        println!("number is not divisible by 4, 3, or 2");
+        println!("sayı, 4, 3 ya da 2'ye bölünemez");
     }
 }

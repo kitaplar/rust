@@ -1,9 +1,9 @@
-fn five() -> i32 {
+fn beş() -> i32 {
     5
 }
 
 fn main() {
-    let x = five();
+    let a = beş();
 
-    println!("The value of x is: {x}");
+    println!("a'nın değeri: {a}");
 }

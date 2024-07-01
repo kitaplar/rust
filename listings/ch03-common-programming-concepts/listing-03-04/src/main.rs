@@ -1,10 +1,10 @@
 fn main() {
-    let a = [10, 20, 30, 40, 50];
-    let mut index = 0;
+    let d = [10, 20, 30, 40, 50];
+    let mut indeks = 0;
 
-    while index < 5 {
-        println!("the value is: {}", a[index]);
+    while indeks < 5 {
+        println!("değer: {}", d[indeks]);
 
-        index += 1;
+        indeks += 1;
     }
 }

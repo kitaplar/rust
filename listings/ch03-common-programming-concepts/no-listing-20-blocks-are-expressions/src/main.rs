@@ -1,8 +1,8 @@
 fn main() {
-    let y = {
-        let x = 3;
-        x + 1
+    let b = {
+        let a = 3;
+        a + 1
     };
 
-    println!("The value of y is: {y}");
+    println!("b'nin değeri: {b}");
 }

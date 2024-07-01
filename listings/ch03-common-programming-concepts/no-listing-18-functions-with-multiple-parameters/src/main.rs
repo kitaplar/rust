@@ -1,7 +1,7 @@
 fn main() {
-    print_labeled_measurement(5, 'h');
+    etiketli_ölçüyü_yazdır(5, 's');
 }
 
-fn print_labeled_measurement(value: i32, unit_label: char) {
-    println!("The measurement is: {value}{unit_label}");
+fn etiketli_ölçüyü_yazdır(değer: i32, birim_etiketi: char) {
+    println!("Ölçü: {değer}{birim_etiketi}");
 }

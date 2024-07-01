@@ -1,11 +1,11 @@
 fn main() {
-    let mut number = 3;
+    let mut sayı = 3;
 
-    while number != 0 {
-        println!("{number}!");
+    while sayı != 0 {
+        println!("{sayı}!");
 
-        number -= 1;
+        sayı -= 1;
     }
 
-    println!("LIFTOFF!!!");
+    println!("HAVALAN!!!");
 }

@@ -1,11 +1,11 @@
 fn main() {
     // ANCHOR: here
-    let number = 7;
+    let sayı = 7;
     // ANCHOR_END: here
 
-    if number < 5 {
-        println!("condition was true");
+    if sayı < 5 {
+        println!("koşul doğru");
     } else {
-        println!("condition was false");
+        println!("koşul yanlış");
     }
 }

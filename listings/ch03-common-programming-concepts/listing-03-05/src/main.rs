@@ -1,7 +1,7 @@
 fn main() {
-    let a = [10, 20, 30, 40, 50];
+    let d = [10, 20, 30, 40, 50];
 
-    for element in a {
-        println!("the value is: {element}");
+    for öğe in d {
+        println!("değer: {öğe}");
     }
 }

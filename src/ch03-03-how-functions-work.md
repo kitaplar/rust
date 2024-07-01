@@ -1,122 +1,123 @@
-## Functions
+## Fonksiyonlar
 
-Functions are prevalent in Rust code. You’ve already seen one of the most
-important functions in the language: the `main` function, which is the entry
-point of many programs. You’ve also seen the `fn` keyword, which allows you to
-declare new functions.
+Fonksiyonlar Rust kodunda yaygındır. Dildeki en önemli fonksiyonlardan birini
+zaten gördünüz: `main` fonksiyonu, ki birçok programın giriş noktasıdır. Ayrıca
+`fn` anahtar kelimesini de gördünüz, bu anahtar kelime, yeni fonksiyonlar
+bildirmenize olanak sağlar.
 
-Rust code uses *snake case* as the conventional style for function and variable
-names, in which all letters are lowercase and underscores separate words.
-Here’s a program that contains an example function definition:
+Rust kodu, fonksiyon ve değişken isimleri için geleneksel olarak *yılan harf*
+kullanır. Bu adette, tüm harfler küçüktür ve altçizgi, kelimeleri ayırır. İşte
+örnek bir fonksiyon tanımı içeren bir program:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-16-functions/src/main.rs}}
 ```
 
-We define a function in Rust by entering `fn` followed by a function name and a
-set of parentheses. The curly brackets tell the compiler where the function
-body begins and ends.
+Rust'ta bir fonksiyonu, `fn` ve takip eden bir fonksiyon adı ve bir parantez
+ikilisi ile tanımlarız. Süslü parantezler derleyiciye, fonksiyon gövdesinin
+nerede başlayıp nerede bittiğini söyler.
 
-We can call any function we’ve defined by entering its name followed by a set
-of parentheses. Because `another_function` is defined in the program, it can be
-called from inside the `main` function. Note that we defined `another_function`
-*after* the `main` function in the source code; we could have defined it before
-as well. Rust doesn’t care where you define your functions, only that they’re
-defined somewhere in a scope that can be seen by the caller.
+Tanımladığımız herhangi bir fonksiyonu, bu fonksiyonun ismini ve bir parantez
+ikilisi girerek çağırabiliriz. `bir_diğer_fonksiyon`, programda tanımlandığı
+için, `main` fonksiyonu içinde çağrılabilir. `bir_diğer_fonksiyon`u, `main`
+fonksiyonundan *sonra* tanımladığımıza dikkat edin; önce de tanımlayabilirdik.
+Rust, fonksiyonları nerede tanımladığınıza pek bakmaz, sadece çağırıcı
+tarafından görülebilen kapsamın bir yerinde tanımlı olup olmadığına bakar.
 
-Let’s start a new binary project named *functions* to explore functions
-further. Place the `another_function` example in *src/main.rs* and run it. You
-should see the following output:
+Hadi *fonksiyonlar* isminde yeni bir ikili proje başlatalım böylece
+fonksiyonları daha fazla keşfedelim. `bir_diğer_fonksiyon` örneğini,
+*src/main.rs*'ye yerleştirin ve çalıştırın. Aşağıdaki çıktıyı görmelisiniz:
 
 ```console
 {{#include ../listings/ch03-common-programming-concepts/no-listing-16-functions/output.txt}}
 ```
 
-The lines execute in the order in which they appear in the `main` function.
-First the “Hello, world!” message prints, and then `another_function` is called
-and its message is printed.
+Satırlar, `main` fonksiyonunda görünen sırada çalışır. Önce “Merhaba, dünya!”
+mesajı yazdırılır, sonra da `bir_diğer_fonksiyon` çağrılır ve bu fonksiyonun
+mesajı yazdırılır.
 
-### Parameters
+### Parametreler
 
-We can define functions to have *parameters*, which are special variables that
-are part of a function’s signature. When a function has parameters, you can
-provide it with concrete values for those parameters. Technically, the concrete
-values are called *arguments*, but in casual conversation, people tend to use
-the words *parameter* and *argument* interchangeably for either the variables
-in a function’s definition or the concrete values passed in when you call a
-function.
+Fonksiyonları *parametreler*e sahip olacakları şekilde tanımlayabiliriz.
+Parametreler, fonksiyonun imzasının bir kısmı olan özel değişkenlerdir. Bir
+fonksiyonun parametreleri olduğunda, bu fonksiyona bu parametreler için somut
+değerler sağlayabilirsiniz. Teknik olarak, somut değerler, *argümanlar* olarak
+isimlendirilir fakat günlük konuşmada, insanlar bir fonksiyonun tanımındaki
+parametreler için de, bir fonksiyonu çağırdığınızda geçirilen somut değerler
+için de *parametre* ve *argüman*ı birbirleri yerine kullanmaya eğilimlidirler.
 
-In this version of `another_function` we add a parameter:
+`bir_diğer_fonksiyon`un bu sürümünde, bir parametre ekliyoruz:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-17-functions-with-parameters/src/main.rs}}
 ```
 
-Try running this program; you should get the following output:
+Bu programı çalıştırmayı deneyin; şu çıktıyı görmelisiniz:
 
 ```console
 {{#include ../listings/ch03-common-programming-concepts/no-listing-17-functions-with-parameters/output.txt}}
 ```
 
-The declaration of `another_function` has one parameter named `x`. The type of
-`x` is specified as `i32`. When we pass `5` in to `another_function`, the
-`println!` macro puts `5` where the pair of curly brackets containing `x` was
-in the format string.
+`bir_diğer_fonksiyon`un tanımında bir parametre var: `x`. `x`'in tipi `i32`
+olarak belirtilmiş. `bir_diğer_fonksiyon`a `5` geçirdiğimiz zaman, `println!`
+makrosu, biçimlendirme string'inde süslü parantez ikilisinin `x` içerdiği yere
+`5` koyar.
 
-In function signatures, you *must* declare the type of each parameter. This is
-a deliberate decision in Rust’s design: requiring type annotations in function
-definitions means the compiler almost never needs you to use them elsewhere in
-the code to figure out what type you mean. The compiler is also able to give
-more helpful error messages if it knows what types the function expects.
+Fonksiyon imzalarında, her parametrenin tipini bildirmek *zorundasınız*. Bu,
+Rust'ın tasarımında kasıtlı bir karardır: fonksiyon tanımlarında tip
+bildirimlerini zorunlu kılmak, derleyicinin, sizin hangi tipi kastettiğinizi
+anlaması için neredeyse hiçbir zaman bunları başka yerde kullanmanıza ihtiyacı
+olmadığı anlamına gelir. Ayrıca derleyici, fonksiyonun beklediği tipi bilirse,
+daha yardımcı hata mesajları gösterebilir.
 
-When defining multiple parameters, separate the parameter declarations with
-commas, like this:
+Birden çok parametre tanımlayacağınızda, parametre bildirimlerini şunun gibi
+virgüller ile ayırın:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-18-functions-with-multiple-parameters/src/main.rs}}
 ```
 
-This example creates a function named `print_labeled_measurement` with two
-parameters. The first parameter is named `value` and is an `i32`. The second is
-named `unit_label` and is type `char`. The function then prints text containing
-both the `value` and the `unit_label`.
+Bu örnek, `etiketli_ölçüyü_yazdır` isminde bir fonksiyon oluşturur ve bu
+fonksiyon iki parametre alır. İlk parametrenin adı `değer`dir ve tipi `i32`'dir.
+İkincisinin adı `birim_etiketi` ve tipi `char`'dır. Fonksiyon sonra hem `değer`i
+hem de `birim_etiketi`ni içeren metni yazdırır.
 
-Let’s try running this code. Replace the program currently in your *functions*
-project’s *src/main.rs* file with the preceding example and run it using `cargo
-run`:
+Hadi bu kodu çalıştırmayı deneyelim. Şu anda *fonksiyonlar* projenizin
+*src/main.rs* dosyasında yer alan programı, bir önceki örnek ile değiştirin ve
+`cargo run` kullanarak çalıştırın:
 
 ```console
 {{#include ../listings/ch03-common-programming-concepts/no-listing-18-functions-with-multiple-parameters/output.txt}}
 ```
 
-Because we called the function with `5` as the value for `value` and `'h'` as
-the value for `unit_label`, the program output contains those values.
+Fonksiyonu, `değer` için `5` değeri ve `birim_etiketi` için `'s'` değeri ile
+çağırdığımız için, program çıktısı bu değerleri içermektedir.
 
-### Statements and Expressions
+### İfadeler ve Deyimler
 
-Function bodies are made up of a series of statements optionally ending in an
-expression. So far, the functions we’ve covered haven’t included an ending
-expression, but you have seen an expression as part of a statement. Because
-Rust is an expression-based language, this is an important distinction to
-understand. Other languages don’t have the same distinctions, so let’s look at
-what statements and expressions are and how their differences affect the bodies
-of functions.
+Fonksiyon gövdeleri, isteğe bağlı olarak bir deyim ile biten bir kısım
+ifadelerden oluşur. Şimdiye kadar üzerinde durduğumuz fonksiyonlar, sonda bir
+deyime sahip değillerdi, fakat bir ifadenin bir parçası olarak bir deyim
+gördünüz. Rust, deyim temelli bir dil olduğu için bu, önemli bir ayrımdır. Diğer
+diller aynı ayrıma sahip olmayabilir, öyleyse hadi ifade ve deyimlerin ne
+olduğuna ve bunların farklarının fonksiyonların gövdelerini nasıl etkilediğine
+bir bakalım.
 
-* **Statements** are instructions that perform some action and do not return
-  a value.
-* **Expressions** evaluate to a resultant value. Let’s look at some examples.
+* **İfadeler**, bazı eylemleri yerine getiren ve hiçbir değer döndürmeyen
+  talimatlardır.
+* **Deyimler**, bir sonuç değerine değerlenir. Hadi bazı örneklere bakalım.
 
-We’ve actually already used statements and expressions. Creating a variable and
-assigning a value to it with the `let` keyword is a statement. In Listing 3-1,
-`let y = 6;` is a statement.
+Aslında zaten ifadeleri ve deyimleri kullandık. `let` anahtar kelimesi ile bir
+değişken oluşturmak ve bu değişkene bir değer atamak, bir ifadedir. Listing
+3-1'de `let y = 6;` bir ifadedir.
 
-<Listing number="3-1" file-name="src/main.rs" caption="A `main` function declaration containing one statement">
+<Listing number="3-1" file-name="src/main.rs" caption="Bir ifade içeren bir `main` fonksiyon bildirimi">
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/listing-03-01/src/main.rs}}
@@ -124,128 +125,128 @@ assigning a value to it with the `let` keyword is a statement. In Listing 3-1,
 
 </Listing>
 
-Function definitions are also statements; the entire preceding example is a
-statement in itself.
+Fonksiyon tanımları ayrıca ifadedir; önceki örneğin tümü bir ifadedir.
 
-Statements do not return values. Therefore, you can’t assign a `let` statement
-to another variable, as the following code tries to do; you’ll get an error:
+İfadeler, değer döndürmez. Bu sebeple bir değişkene bir `let` ifadesi
+atayamazsınız. Aşağıdaki kod bunu denediği için bir hata alıyor:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-19-statements-vs-expressions/src/main.rs}}
 ```
 
-When you run this program, the error you’ll get looks like this:
+Bu programı çalıştırdığınızda, alacağınız hata şunun gibidir:
 
 ```console
 {{#include ../listings/ch03-common-programming-concepts/no-listing-19-statements-vs-expressions/output.txt}}
 ```
 
-The `let y = 6` statement does not return a value, so there isn’t anything for
-`x` to bind to. This is different from what happens in other languages, such as
-C and Ruby, where the assignment returns the value of the assignment. In those
-languages, you can write `x = y = 6` and have both `x` and `y` have the value
-`6`; that is not the case in Rust.
+`let b = 6` ifadesi bir değer döndürmez, yani `a`ya atanacak herhangi bir şey
+yoktur. Bu, diğer dillerde olanlardan farklıdır, mesela C ve Ruby'de. Bu
+dillerde atama, atamanın değerini döndürür. Bu dillerde `a = b = 6`
+yazabilirsiniz ve hem `a`'nın hem de `b`'nin `6` değerine sahip olmasını
+sağlayabilirsiniz; bu, Rust'ta geçerli değildir.
 
-Expressions evaluate to a value and make up most of the rest of the code that
-you’ll write in Rust. Consider a math operation, such as `5 + 6`, which is an
-expression that evaluates to the value `11`. Expressions can be part of
-statements: in Listing 3-1, the `6` in the statement `let y = 6;` is an
-expression that evaluates to the value `6`. Calling a function is an
-expression. Calling a macro is an expression. A new scope block created with
-curly brackets is an expression, for example:
+Deyimler bir değere değerlenirler ve Rust'ta yazacağınız kodun çoğunluğunu
+oluştururlar. Mesela bir matematik işlemini düşünün, `5 + 6` gibi, ki bu, `11`'e
+değerlendirilen bir deyimdir. Deyimler, ifadelerin bir parçası olabilir: Listing
+3-1'de, `let b = 6;` ifadesindeki `6`, `6` değerine değerlendirilen bir
+deyimdir. Bir fonksiyon çağırmak, bir deyimdir. Bir makro çağırmak bir deyimdir.
+Süslü parantezler ile oluşturulan yeni kapsam bloğu bir deyimdir, mesela:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-20-blocks-are-expressions/src/main.rs}}
 ```
 
+Bu deyim:
+
 This expression:
 
 ```rust,ignore
 {
-    let x = 3;
-    x + 1
+    let a = 3;
+    a + 1
 }
 ```
 
-is a block that, in this case, evaluates to `4`. That value gets bound to `y`
-as part of the `let` statement. Note that the `x + 1` line doesn’t have a
-semicolon at the end, which is unlike most of the lines you’ve seen so far.
-Expressions do not include ending semicolons. If you add a semicolon to the end
-of an expression, you turn it into a statement, and it will then not return a
-value. Keep this in mind as you explore function return values and expressions
-next.
+bu durumda `4`'e değerlenen bir bloktur. Bu değer, `let` ifadesinden dolayı
+`b`'ye bağlanır. `a + 1`'in en sonda bir noktalı virgül içermediğine dikkat
+edin, ki bu, şimdiye kadar gördüğünüz satırlardakilerin aksine. Deyimler, sona
+erdiren noktalı virgül içermezler. Eğer bir deyimin sonuna bir noktalı virgül
+eklerseniz, bunu bir ifadeye dönüştürürsünüz, ve sonra artık bir değer geri
+döndürmez. Bunu aklınızda bulundurun çünkü şimdi fonksiyon dönme değerlerini ve
+deyimlerini keşfedeceksiniz.
 
-### Functions with Return Values
+### Dönme Değerleri ile Fonksiyonlar
 
-Functions can return values to the code that calls them. We don’t name return
-values, but we must declare their type after an arrow (`->`). In Rust, the
-return value of the function is synonymous with the value of the final
-expression in the block of the body of a function. You can return early from a
-function by using the `return` keyword and specifying a value, but most
-functions return the last expression implicitly. Here’s an example of a
-function that returns a value:
+Fonksiyonlar, kendilerini çağıran koda değerler dönebilir. Dönme değerlerini
+isimlendirmiyoruz ancak bunların tiplerini bir oktan (`->`) sonra bildirmeliyiz.
+Rust'ta fonksiyonun dönüş değeri, fonksiyon gövdesinin bloğundaki son deyim ile
+eş anlamlıdır. `return` anahtar kelimesini kullanarak ve bir değer belirterek
+daha erken dönebilirsiniz, fakat birçok fonksiyon son deyimi içsel olarak
+döndürür. İşte bir değer döndüren bir fonksiyona örnek:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-21-function-return-values/src/main.rs}}
 ```
 
-There are no function calls, macros, or even `let` statements in the `five`
-function—just the number `5` by itself. That’s a perfectly valid function in
-Rust. Note that the function’s return type is specified too, as `-> i32`. Try
-running this code; the output should look like this:
+`beş` fonksiyonunda, fonksiyon çağrısı, makro, hatta `let` ifadeleri bile yok,
+sadece `5` sayısının kendisi var. Bu, Rust'ta gayet geçerli bir fonksiyondur.
+Fonksiyonun döndürme tipinin de belirtildiğine dikkat edin, `-> i32` şeklinde.
+Bu kodu çalıştırmayı deneyin; çıktı şu şekilde görünecektir:
 
 ```console
 {{#include ../listings/ch03-common-programming-concepts/no-listing-21-function-return-values/output.txt}}
 ```
 
-The `5` in `five` is the function’s return value, which is why the return type
-is `i32`. Let’s examine this in more detail. There are two important bits:
-first, the line `let x = five();` shows that we’re using the return value of a
-function to initialize a variable. Because the function `five` returns a `5`,
-that line is the same as the following:
+`beş`teki `5`, fonksiyonun döndürme değeridir, bu sebeple döndürme tipi
+`i32`'dir. Hadi bunu ayrıntılı bir şekilde inceleyelim. İki önemli konu var:
+ilki, `let a = beş();`, bir değişkeni ilklendirmek için bir fonksiyonun dönen
+değerini kullandığımızı göstermektedir. `beş` fonksiyonu `5` döndürdüğü için, bu
+satır şununla aynıdır:
 
 ```rust
-let x = 5;
+let a = 5;
 ```
 
-Second, the `five` function has no parameters and defines the type of the
-return value, but the body of the function is a lonely `5` with no semicolon
-because it’s an expression whose value we want to return.
+İkincisi, `beş` fonksiyonunun herhangi bir parametresi yoktur ve döndürme
+değerinin tipini tanımlamaktadır, ancak fonksiyonun gövdesi, noktalı virgülsüz,
+yalnız bir `5`'tir çünkü bu, döndürmek istediğimiz değere sahip bir deyimdir.
 
-Let’s look at another example:
+Hadi bir diğer örneğe bakalım:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-22-function-parameter-and-return/src/main.rs}}
 ```
 
-Running this code will print `The value of x is: 6`. But if we place a
-semicolon at the end of the line containing `x + 1`, changing it from an
-expression to a statement, we’ll get an error:
+Bu kodu çalıştırmak `a'nın değeri: 6` yazdıracak. Ancak `a + 1`'in olduğu
+satırın sonuna bir noktalı virgül koyarsak, bunu bir deyimden bir ifadeye
+çevirmiş oluruz ve bir hata alırız:
 
-<span class="filename">Filename: src/main.rs</span>
+<span class="filename">Dosya adı: src/main.rs</span>
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch03-common-programming-concepts/no-listing-23-statements-dont-return-values/src/main.rs}}
 ```
 
-Compiling this code produces an error, as follows:
+Bu kodu derlemek aşağıdaki gibi bir hata üretir:
 
 ```console
 {{#include ../listings/ch03-common-programming-concepts/no-listing-23-statements-dont-return-values/output.txt}}
 ```
 
-The main error message, `mismatched types`, reveals the core issue with this
-code. The definition of the function `plus_one` says that it will return an
-`i32`, but statements don’t evaluate to a value, which is expressed by `()`,
-the unit type. Therefore, nothing is returned, which contradicts the function
-definition and results in an error. In this output, Rust provides a message to
-possibly help rectify this issue: it suggests removing the semicolon, which
-would fix the error.
+Asıl hata mesajı olan `mismatched types` yani `eşleşmeyen tipler`, bu koddaki
+asıl meseleyi ortaya çıkarır. `artı_bir` fonksiyonunun tanımı, bunun bir `i32`
+döndürdüğünü söylemektedir ancak ifadeler bir değere değerlendirilmezler, ki bu
+da `()` yani birim tip döndürülmesi demektir. Bundan dolayı hiçbir şey
+döndürülmez ancak bu, fonksiyon tanımı ile çelişir ve bir hatayla sonuçlanır.
+Bu çıktıda Rust, muhtemelen bu sorunun düzeltilmesine yardımcı olacak bir mesaj
+sunmaktadır: noktalı virgülü silmeyi önermektedir, ki bu da hatayı
+düzeltecektir.

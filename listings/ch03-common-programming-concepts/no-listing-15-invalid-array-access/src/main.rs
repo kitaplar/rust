@@ -1,22 +1,22 @@
 use std::io;
 
 fn main() {
-    let a = [1, 2, 3, 4, 5];
+    let d = [1, 2, 3, 4, 5];
 
-    println!("Please enter an array index.");
+    println!("Lütfen bir dizi indeksi girin.");
 
-    let mut index = String::new();
+    let mut indeks = String::new();
 
     io::stdin()
-        .read_line(&mut index)
-        .expect("Failed to read line");
+        .read_line(&mut indeks)
+        .expect("Satırı okumak başarısız");
 
-    let index: usize = index
+    let indeks: usize = indeks
         .trim()
         .parse()
-        .expect("Index entered was not a number");
+        .expect("Girilen indeks bir sayı değil");
 
-    let element = a[index];
+    let öğe = d[indeks];
 
-    println!("The value of the element at index {index} is: {element}");
+    println!("{indeks} indeksindeki öğenin değeri: {öğe}");
 }

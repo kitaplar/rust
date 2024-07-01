@@ -1,6 +1,6 @@
 fn main() {
     // ANCHOR: here
-    let mut spaces = "   ";
-    spaces = spaces.len();
+    let mut boşluklar = "   ";
+    boşluklar = boşluklar.len();
     // ANCHOR_END: here
 }

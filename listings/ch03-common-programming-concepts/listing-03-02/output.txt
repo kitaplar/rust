@@ -1,5 +1,5 @@
 $ cargo run
-   Compiling branches v0.1.0 (file:///projects/branches)
+   Compiling dallar v0.1.0 (file:///projects/dallar)
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.30s
-     Running `target/debug/branches`
-The value of number is: 5
+     Running `target/debug/dallar`
+sayının değeri: 5

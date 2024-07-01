@@ -1,7 +1,7 @@
 fn main() {
-    let condition = true;
+    let koşul = true;
 
-    let number = if condition { 5 } else { "six" };
+    let sayı = if koşul { 5 } else { "altı" };
 
-    println!("The value of number is: {number}");
+    println!("sayının değeri: {sayı}");
 }

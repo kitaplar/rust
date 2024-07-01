@@ -1,7 +1,7 @@
 fn main() {
-    let number = 3;
+    let sayı = 3;
 
-    if number {
-        println!("number was three");
+    if sayı {
+        println!("sayı üç");
     }
 }
